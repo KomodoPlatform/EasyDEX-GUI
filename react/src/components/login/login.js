@@ -4,7 +4,6 @@ import {
   toggleAddcoinModal,
   shepherdElectrumAuth,
   shepherdElectrumCoins,
-  //iguanaActiveHandle,
   startInterval,
   getDexCoins,
   triggerToaster,
@@ -21,8 +20,9 @@ import { translate } from '../../translate/translate';
 import {
   encryptPassphrase,
   loadPinList,
-  loginWithPin
+  loginWithPin,
 } from '../../actions/actions/pin';
+import mainWindow from '../../util/mainWindow';
 
 const IGUNA_ACTIVE_HANDLE_TIMEOUT = 3000;
 const IGUNA_ACTIVE_COINS_TIMEOUT = 10000;
@@ -64,7 +64,6 @@ class Login extends React.Component {
     this.loginSeed = this.loginSeed.bind(this);
     this.toggleSeedInputVisibility = this.toggleSeedInputVisibility.bind(this);
     this.handleRegisterWallet = this.handleRegisterWallet.bind(this);
-    this.openSyncOnlyModal = this.openSyncOnlyModal.bind(this);
     this.toggleSeedBackupModal = this.toggleSeedBackupModal.bind(this);
     this.copyPassPhraseToClipboard = this.copyPassPhraseToClipboard.bind(this);
     this.execWalletCreate = this.execWalletCreate.bind(this);
@@ -94,7 +93,7 @@ class Login extends React.Component {
 
   toggleCustomWalletSeed() {
     this.setState({
-      customWalletSeed: !this.state.customWalletSeed
+      customWalletSeed: !this.state.customWalletSeed,
     }, () => {
       // if customWalletSeed is set to false, regenerate the seed
       if (!this.state.customWalletSeed) {
@@ -126,50 +125,25 @@ class Login extends React.Component {
 
   updateEncryptKey(e) {
     this.setState({
-      encryptKey: e.target.value
+      encryptKey: e.target.value,
     });
   }
 
   updatePubKey(e) {
     this.setState({
-      pubKey: e.target.value
+      pubKey: e.target.value,
     });
   }
 
   updateDecryptKey(e) {
     this.setState({
-      decryptKey: e.target.value
-    });
-  }
-
-  openSyncOnlyModal() {
-    Store.dispatch(getSyncOnlyForks());
-
-    const _iguanaActiveHandle = setInterval(() => {
-      Store.dispatch(getSyncOnlyForks());
-    }, IGUNA_ACTIVE_HANDLE_TIMEOUT);
-    Store.dispatch(
-      startInterval(
-        'syncOnly',
-        _iguanaActiveHandle
-      )
-    );
-
-    Store.dispatch(toggleSyncOnlyModal(true));
-    this.setState({
-      displayLoginSettingsDropdown: false,
+      decryptKey: e.target.value,
     });
   }
 
   componentDidMount() {
-    let appConfig;
-
-    try {
-      appConfig = window.require('electron').remote.getCurrentWindow().appConfig;
-    } catch (e) {}
-
     this.setState({
-      isExperimentalOn: appConfig.experimentalFeatures,
+      isExperimentalOn: mainWindow.experimentalFeatures,
     });
   }
 
@@ -353,7 +327,7 @@ class Login extends React.Component {
 
   updateSelectedPin(e) {
     this.setState({
-      selectedPin: e.target.value
+      selectedPin: e.target.value,
     });
   }
 

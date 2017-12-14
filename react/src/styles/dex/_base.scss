@@ -109,19 +109,53 @@
     text-decoration: underline;
   }
 
-  .crypto-icons-pack {
-    svg {
-      position: relative;
-      top: 9px;
-      left: 10px;
+  .dashboard-wallets-list {
+    .coinList-coin {
+      width: calc(33% - 20px);
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 40px;
+
+      img {
+        position: relative;
+        top: 4px;
+        left: 5px;
+        max-height: 58px;
+        max-width: 50px;
+        opacity: 0.9;
+        border-radius: 50%;
+      }
+      .coinList-coin_balance-name {
+        text-transform: capitalize;
+      }
+      &:hover {
+        img {
+          opacity: 1;
+        }
+      }
+    }
+    .add-new-coin {
+      i {
+        width: 30px;
+        height: 30px;
+        transform: rotate(0deg);
+        border-radius: 50%;
+        background: #fff;
+      }
     }
   }
 
-  .dashboard-wallets-list {
-    .coinList-coin {
-      width: 32%;
-      float: left;
-      margin-right: 20px;
+  .prices {
+    .coin-icon-svg {
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
+    .orders-item-wrapper {
+      width: 100%;
+      max-width: 600px;
     }
   }
 }

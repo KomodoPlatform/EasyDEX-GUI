@@ -69,7 +69,7 @@ class DaemonStdoutPanel extends React.Component {
                 <select
                   className="form-control form-material"
                   name="coin"
-                  value={ this.state.coin || this.props.ActiveCoin.coin }
+                  value={ this.state.coin || this.props.ActiveCoin.coin || '' }
                   onChange={ (event) => this.updateInput(event) }
                   autoFocus>
                   { this.renderCoinListSelectorOptions() }

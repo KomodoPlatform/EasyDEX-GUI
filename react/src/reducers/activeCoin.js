@@ -18,6 +18,8 @@ import {
   DASHBOARD_ELECTRUM_BALANCE,
   DASHBOARD_ELECTRUM_TRANSACTIONS,
   DASHBOARD_REMOVE_COIN,
+  DASHBOARD_ACTIVE_COIN_NET_PEERS,
+  DASHBOARD_ACTIVE_COIN_NET_TOTALS,
 } from '../actions/storeType';
 
 // TODO: refactor current coin props copy on change
@@ -40,6 +42,10 @@ export function ActiveCoin(state = {
   progress: null,
   rescanInProgress: false,
   getinfoFetchFailures: 0,
+  net: {
+    peers: null,
+    totals: null,
+  },
 }, action) {
   switch (action.type) {
     case DASHBOARD_REMOVE_COIN:
@@ -61,6 +67,10 @@ export function ActiveCoin(state = {
           activeSection: 'default',
           progress: null,
           rescanInProgress: false,
+          net: {
+            peers: null,
+            totals: null,
+          },
         };
       } else {
         return {
@@ -87,6 +97,7 @@ export function ActiveCoin(state = {
           progress: state.progress,
           rescanInProgress: state.rescanInProgress,
           getinfoFetchFailures: state.getinfoFetchFailures,
+          net: state.net,
         };
         let _coins = state.coins;
 
@@ -114,6 +125,7 @@ export function ActiveCoin(state = {
           progress: _coinData.progress,
           rescanInProgress: _coinData.rescanInProgress,
           getinfoFetchFailures: _coinData.getinfoFetchFailures,
+          net: _coinData.net,
         };
       } else {
         if (state.coin) {
@@ -134,6 +146,7 @@ export function ActiveCoin(state = {
             progress: state.progress,
             rescanInProgress: state.rescanInProgress,
             getinfoFetchFailures: state.getinfoFetchFailures,
+            net: state.net,
           };
           let _coins = state.coins;
 
@@ -156,6 +169,10 @@ export function ActiveCoin(state = {
             activeSection: 'default',
             progress: null,
             rescanInProgress: false,
+            net: {
+              peers: null,
+              totals: null,
+            },
           };
         } else {
           return {
@@ -172,6 +189,10 @@ export function ActiveCoin(state = {
             activeSection: 'default',
             progress: null,
             rescanInProgress: false,
+            net: {
+              peers: null,
+              totals: null,
+            },
           };
         }
       }
@@ -272,6 +293,22 @@ export function ActiveCoin(state = {
           rescanInProgress: action.rescanInProgress,
         };
       }
+    case DASHBOARD_ACTIVE_COIN_NET_PEERS:
+      return {
+        ...state,
+        net: {
+          peers: action.peers,
+          totals: state.net.totals,
+        },
+      };
+    case DASHBOARD_ACTIVE_COIN_NET_TOTALS:
+      return {
+        ...state,
+        net: {
+          peers: state.net.peers,
+          totals: action.totals,
+        },
+      };
     default:
       return state;
   }

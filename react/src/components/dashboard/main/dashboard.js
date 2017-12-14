@@ -7,6 +7,7 @@ import {
 } from '../../../actions/actionCreators';
 import { zcashParamsCheckErrors } from '../../../util/zcashParams';
 import Store from '../../../store';
+import mainWindow from '../../../util/mainWindow';
 
 class Dashboard extends React.Component {
   constructor() {
@@ -20,7 +21,7 @@ class Dashboard extends React.Component {
 
   verifyZcashParams() {
     if (!this.state.zcashParamsVerifyTriggered) {
-      const _res = window.require('electron').remote.getCurrentWindow().zcashParamsExist;
+      const _res = mainWindow.zcashParamsExist;
       const _errors = zcashParamsCheckErrors(_res);
 
       if (_errors) {

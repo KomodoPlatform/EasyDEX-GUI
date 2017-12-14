@@ -7,6 +7,7 @@ import {
 import Store from '../../../store';
 import Config from '../../../config';
 import { translate } from '../../../translate/translate';
+import mainWindow from '../../../util/mainWindow';
 
 import ZcparamsFetchModalRender from './zcparamsFetchModal.render';
 
@@ -61,16 +62,10 @@ class ZcparamsFetchModal extends React.Component {
   }
 
   componentWillMount() {
-    let _zcparamsSources;
-
     socket.on('zcparams', msg => this.updateSocketsData(msg));
 
-    try {
-      _zcparamsSources = window.require('electron').remote.getCurrentWindow().zcashParamsDownloadLinks;
-    } catch (e) {}
-
     this.setState(Object.assign({}, this.state, {
-      zcparamsSources: _zcparamsSources,
+      zcparamsSources: mainWindow.zcashParamsDownloadLinks,
     }));
   }
 
@@ -108,7 +103,6 @@ class ZcparamsFetchModal extends React.Component {
           if (data.msg.file === 'proving') {
             _updateLog = [];
             _updateLog.push(translate('ZCPARAMS_FETCH.BOTH_KEYS_VERIFIED'));
-            // _updateLog.push(translate('ZCPARAMS_FETCH.PLEASE_RESTART'));
             this.setState(Object.assign({}, this.state, {
               updateLog: _updateLog,
               done: true,

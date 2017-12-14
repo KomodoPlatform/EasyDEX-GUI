@@ -12,7 +12,7 @@ import {
   startAssetChain,
   startCrypto,
   checkCoinType,
-  checkAC
+  checkAC,
 } from '../../components/addcoin/payload';
 
 function iguanaActiveHandleState(json) {
@@ -240,10 +240,9 @@ export function shepherdHerd(coin, mode, path, startupParams) {
           addCoinResult(coin, mode)
         );
       } else {
-        console.warn(acData);
         dispatch(
           triggerToaster(
-            translate('TOASTR.ERROR_STARTING_DAEMON', coin) + ' ' + translate('TOASTR.PORT_IS_TAKEN', acData.rpc),
+            translate('TOASTR.ERROR_STARTING_DAEMON', coin) + ' ' + translate('TOASTR.PORT_IS_TAKEN', acData),
             translate('TOASTR.SERVICE_NOTIFICATION'),
             'error',
             false

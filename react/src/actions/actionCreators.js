@@ -36,14 +36,11 @@ export * from './actions/nativeSyncInfo';
 export * from './actions/nativeSend';
 export * from './actions/coinList';
 export * from './actions/nativeNewAddress';
-// export * from './actions/logout';
 export * from './actions/settings';
 export * from './actions/addCoin';
-// export * from './actions/walletAuth';
 export * from './actions/copyAddress';
 export * from './actions/sysInfo';
 export * from './actions/dexCoins';
-//export * from './actions/fullTxHistory';
 export * from './actions/cli';
 export * from './actions/update';
 export * from './actions/jumblr';
@@ -52,6 +49,7 @@ export * from './actions/nativeDashboardUpdate';
 export * from './actions/getTxDetails';
 export * from './actions/electrum';
 export * from './actions/mm';
+export * from './actions/nativeNetwork';
 
 export function changeActiveAddress(address) {
   return {

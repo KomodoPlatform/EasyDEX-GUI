@@ -1,9 +1,10 @@
 import React from 'react';
 import { translate } from '../../translate/translate';
-import AddCoinOptionsCrypto from '../addcoin/addcoinOptionsCrypto';
-import AddCoinOptionsAC from '../addcoin/addcoinOptionsAC';
-import AddCoinOptionsACFiat from '../addcoin/addcoinOptionsACFiat';
+import addCoinOptionsCrypto from '../addcoin/addcoinOptionsCrypto';
+import addCoinOptionsAC from '../addcoin/addcoinOptionsAC';
+import addCoinOptionsACFiat from '../addcoin/addcoinOptionsACFiat';
 import mainWindow from '../../util/mainWindow';
+import Select from 'react-select';
 
 const CoinSelectorsRender = function(item, coin, i) {
   return (
@@ -16,19 +17,13 @@ const CoinSelectorsRender = function(item, coin, i) {
         <div
           className={ this.hasMoreThanOneCoin() && (item.mode === '-1' || item.mode === -1) ? 'col-sm-6 form-group' : 'form-group' }
           style={{ paddingLeft: this.hasMoreThanOneCoin() ? '0' : '15px' }}>
-          <select
-            className="form-control form-material"
+          <Select
             name="selectedCoin"
             value={ coin }
             onChange={ (event) => this.updateSelectedCoin(event, i) }
-            autoFocus>
-            <option>{ translate('INDEX.SELECT') }</option>
-            <AddCoinOptionsCrypto appSettings={ this.props.Settings } />
-            <AddCoinOptionsAC appSettings={ this.props.Settings } />
-            { mainWindow.arch === 'x64' &&
-              <AddCoinOptionsACFiat appSettings={ this.props.Settings } />
-            }
-          </select>
+            optionRenderer={ this.renderCoinOption }
+            valueRenderer={ this.renderCoinOption }
+            options={ addCoinOptionsCrypto().concat(addCoinOptionsAC()).concat(addCoinOptionsACFiat()) } />
         </div>
         <div className={ this.hasMoreThanOneCoin() && (item.mode === '-1' || item.mode === -1) ? 'col-sm-6' : 'hide' }>
           <div className="toggle-box padding-bottom-10">

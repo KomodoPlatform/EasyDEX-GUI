@@ -6,17 +6,15 @@ import {
   getAppInfo,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
-
 import {
   SettingsRender,
 } from './settings.render';
+import mainWindow from '../../../util/mainWindow';
 
 /*
   TODO:
-  1) pre-select active coin in add node tab
-  2) add fiat section
-  3) kickstart section
-  4) batch export/import wallet addresses
+  1) add fiat section
+  2) batch export/import wallet addresses
 */
 class Settings extends React.Component {
   constructor(props) {
@@ -47,14 +45,8 @@ class Settings extends React.Component {
   }
 
   componentWillMount() {
-    let appConfig;
-
-    try {
-      appConfig = window.require('electron').remote.getCurrentWindow().appConfig;
-    } catch (e) {}
-
     this.setState({
-      isExperimentalOn: appConfig.experimentalFeatures,
+      isExperimentalOn: mainWindow.appConfig.experimentalFeatures,
     });
   }
 

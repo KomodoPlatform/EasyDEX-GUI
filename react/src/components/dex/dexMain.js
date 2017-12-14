@@ -30,12 +30,27 @@ class DexMain extends React.Component {
   }
 
   componentWillMount() {
+    if (mainWindow.argv.indexOf('dexonly') > -1) {
+      Store.dispatch(shepherdMMRequest({
+        method: 'statsdisp',
+        mapToProp: 'stats',
+      }));
+      Store.dispatch(shepherdMMRequest({
+        method: 'getprices',
+        mapToProp: 'prices',
+      }));
+      Store.dispatch(shepherdMMRequest({
+        method: 'swapstatus',
+        mapToProp: 'swaps',
+      }));
+    }
+
     mainWindow.getMMCacheData()
     .then((res) => {
       console.warn('mm cache', res);
 
-      const { rates, coins, isAuth, swaps, asks, bids, pair } = res;
-      Store.dispatch(shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates));
+      const { rates, coins, isAuth, swaps, asks, bids, pair, coinsHelper, electrumServersList } = res;
+      Store.dispatch(shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates, coinsHelper, electrumServersList));
     });
   }
 
@@ -53,13 +68,17 @@ class DexMain extends React.Component {
         method: 'getprices',
         mapToProp: 'prices',
       }));
+      Store.dispatch(shepherdMMRequest({
+        method: 'swapstatus',
+        mapToProp: 'swaps',
+      }));
 
       mainWindow.getMMCacheData()
       .then((res) => {
         console.warn('mm cache', res);
 
-        const { rates, coins, isAuth, swaps, asks, bids, pair } = res;
-        Store.dispatch(shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates));
+        const { rates, coins, isAuth, swaps, asks, bids, pair, coinsHelper, electrumServersList } = res;
+        Store.dispatch(shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates, coinsHelper, electrumServersList));
       });
     } else {
       console.warn('dex');
@@ -87,8 +106,9 @@ class DexMain extends React.Component {
   }
 
   render() {
-    if (this.props.Dashboard &&
-        this.props.Dashboard.activeSection === 'dex') {
+    if ((this.props.Dashboard &&
+        this.props.Dashboard.activeSection === 'dex') ||
+        mainWindow.argv.indexOf('dexonly') > -1) {
       return (
         <div className="dex">
           <content className="app content-container">

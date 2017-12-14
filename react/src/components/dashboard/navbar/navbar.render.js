@@ -1,5 +1,6 @@
 import React from 'react';
 import { translate } from '../../../translate/translate';
+import mainWindow from '../../../util/mainWindow';
 
 const NavbarRender = function() {
   return (
@@ -52,7 +53,7 @@ const NavbarRender = function() {
                 <i className="site-menu-icon"></i> { translate('INDEX.WALLETS') }
               </a>
             </li>
-            <li className={ this.isSectionActive('dex') ? 'hide active nav-top-menu' : 'hide nav-top-menu' }>
+            <li className={ (this.isSectionActive('dex') ? 'active nav-top-menu' : 'nav-top-menu') + (mainWindow.argv.indexOf('dexonly') > -1 ? '' : ' hide') }>
               <a onClick={ () => this.dashboardChangeSection('dex') }>
                 <i className="site-menu-icon"></i> BarterDEX
               </a>

@@ -63,7 +63,7 @@ class AppSettingsPanel extends React.Component {
             this.state.appConfigSchema[key].type === 'folder' &&
             _appSettings[key] &&
             _appSettings[key].length) {
-          const _testLocation = window.require('electron').remote.getCurrentWindow().testLocation;
+          const _testLocation = mainWindow.testLocation;
           saveAfterPathCheck = true;
 
           _testLocation(_appSettings[key])

@@ -10,6 +10,8 @@ import {
   DEX_UTXO,
   DEX_CACHE_PRELOAD,
   DEX_PRICES,
+  DEX_STATS,
+  DEX_ACTIVE_SECTION,
 } from '../storeType';
 import { translate } from '../../translate/translate';
 import Config from '../../config';
@@ -18,7 +20,7 @@ import {
 } from '../actionCreators';
 import Store from '../../store';
 
-export function shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates) {
+export function shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates, coinsHelper, electrumServersList) {
   return {
     type: DEX_CACHE_PRELOAD,
     isAuth,
@@ -28,6 +30,8 @@ export function shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swa
     coins,
     swaps,
     rates,
+    coinsHelper,
+    electrumServersList,
   }
 }
 
@@ -88,7 +92,6 @@ export function shepherdMMStop() {
 }
 
 export function shepherdMMRequest(payload) {
-  console.warn(payload);
   return dispatch => {
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/mm/request`, {
@@ -101,7 +104,7 @@ export function shepherdMMRequest(payload) {
     )
     .catch((error) => {
       console.log(error);
-      Store.dispatch(
+      dispatch(
         triggerToaster(
           'shepherdMMRequest',
           'Error',
@@ -111,21 +114,34 @@ export function shepherdMMRequest(payload) {
     })
     .then(response => response.json())
     .then(json => {
-      dispatch(shepherdMMRequstState(payload.mapToProp, json));
+      console.warn(json);
+      dispatch(shepherdMMRequestState(payload.mapToProp, json));
     });
   }
 }
 
-export function shepherdMMRequstState(prop, json) {
+export function shepherdMMRequestState(prop, json) {
   if (prop === 'prices') {
     return {
       type: DEX_PRICES,
       prices: json,
     }
-  } else if (prop === 'statsdisp') {
+  } else if (prop === 'stats') {
     return {
       type: DEX_STATS,
-      prices: json,
+      stats: json,
     }
+  } else if (prop === 'swaps') {
+    return {
+      type: DEX_SWAPS,
+      swaps: json,
+    }
+  }
+}
+
+export function dexActiveSection(section) {
+  return {
+    type: DEX_ACTIVE_SECTION,
+    section,
   }
 }

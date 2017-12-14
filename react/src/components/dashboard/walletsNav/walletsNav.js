@@ -5,14 +5,18 @@ import {
   toggleSendCoinForm,
   toggleReceiveCoinForm,
   toggleSendReceiveCoinForms,
-  toggleDashboardActiveSection
+  toggleDashboardActiveSection,
+  getNativeNettotals,
+  getNativePeers,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import Config from '../../../config';
 import {
   WalletsNavNoWalletRender,
-  WalletsNavWithWalletRender
+  WalletsNavWithWalletRender,
 } from './walletsNav.render';
+
+const NET_INFO_INTERVAL = 10000;
 
 class WalletsNav extends React.Component {
   constructor() {
@@ -21,6 +25,7 @@ class WalletsNav extends React.Component {
     this.toggleNativeWalletInfo = this.toggleNativeWalletInfo.bind(this);
     this.toggleNativeWalletTransactions = this.toggleNativeWalletTransactions.bind(this);
     this.checkTotalBalance = this.checkTotalBalance.bind(this);
+    this.netInfoInterval = null;
   }
 
   copyMyAddress(address) {
@@ -42,7 +47,25 @@ class WalletsNav extends React.Component {
     return _balance;
   }
 
+  componentWillReceiveProps(props) {
+    if (this.netInfoInterval &&
+        props.ActiveCoin.activeSection !== 'settings') {
+      clearInterval(this.netInfoInterval);
+      this.netInfoInterval = null;
+    }
+  }
+
   toggleNativeWalletInfo() {
+    if (this.props.ActiveCoin.activeSection !== 'settings') {
+      Store.dispatch(getNativePeers(this.props.ActiveCoin.coin));
+      Store.dispatch(getNativeNettotals(this.props.ActiveCoin.coin));
+
+      this.netInfoInterval = setInterval(() => {
+        Store.dispatch(getNativePeers(this.props.ActiveCoin.coin));
+        Store.dispatch(getNativeNettotals(this.props.ActiveCoin.coin));
+      }, NET_INFO_INTERVAL);
+    }
+
     Store.dispatch(toggleDashboardActiveSection('settings'));
   }
 
@@ -94,7 +117,6 @@ const mapStateToProps = (state) => {
       send: state.ActiveCoin.send,
       receive: state.ActiveCoin.receive,
       balance: state.ActiveCoin.balance,
-      cache: state.ActiveCoin.cache,
       activeSection: state.ActiveCoin.activeSection,
       activeAddress: state.ActiveCoin.activeAddress,
     },

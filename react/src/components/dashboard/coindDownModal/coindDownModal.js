@@ -6,10 +6,11 @@ import {
   getDebugLog,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
+import mainWindow from '../../../util/mainWindow';
 
 import CoindDownModalRender from './coindDownModal.render';
 
-const COIND_DOWN_MODAL_FETCH_FAILURES_THRESHOLD = window.require('electron').remote.getCurrentWindow().appConfig.failedRPCAttemptsThreshold || 10;
+const COIND_DOWN_MODAL_FETCH_FAILURES_THRESHOLD = mainWindow.appConfig.failedRPCAttemptsThreshold || 10;
 
 class CoindDownModal extends React.Component {
   constructor() {
@@ -60,14 +61,8 @@ class CoindDownModal extends React.Component {
   }
 
   componentWillMount() {
-    let _kmdMainPassiveMode;
-
-    try {
-      _kmdMainPassiveMode = window.require('electron').remote.getCurrentWindow().kmdMainPassiveMode;
-    } catch (e) {}
-
     this.setState(Object.assign({}, this.state, {
-      kmdMainPassiveMode: _kmdMainPassiveMode,
+      kmdMainPassiveMode: mainWindow.kmdMainPassiveMode,
     }));
   }
 

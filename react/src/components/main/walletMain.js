@@ -5,24 +5,32 @@ import AddCoin from '../addcoin/addcoin';
 import Login from '../login/login';
 import Dashboard from '../dashboard/main/dashboard';
 import DexMain from '../dex/dexMain';
+import mainWindow from '../../util/mainWindow';
 
 class WalletMain extends React.Component {
   render() {
-    return (
-      <div className="full-height">
-        <input
-          type="text"
-          id="js-copytextarea" />
-        <Dashboard />
-        { /*
-        <DexMain />
-        */
-        }
-        <AddCoin />
-        <Login />
-        <Toaster {...this.props.toaster} />
-      </div>
-    );
+    if (mainWindow.argv.indexOf('dexonly') > -1) {
+      return (
+        <div className="full-height">
+          <input
+            type="text"
+            id="js-copytextarea" />
+          <DexMain />
+        </div>
+      );
+    } else {
+      return (
+        <div className="full-height">
+          <input
+            type="text"
+            id="js-copytextarea" />
+          <Dashboard />
+          <AddCoin />
+          <Login />
+          <Toaster {...this.props.toaster} />
+        </div>
+      );
+    }
   }
 }
 

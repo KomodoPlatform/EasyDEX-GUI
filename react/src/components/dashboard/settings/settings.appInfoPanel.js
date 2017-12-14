@@ -14,6 +14,17 @@ class AppInfoPanel extends React.Component {
     if (!releaseInfo) {
       return null
     } else {
+      let _items = [];
+      let _ports = mainWindow.getAssetChainPorts()
+
+      for (let key in _ports) {
+        _items.push(
+          <span key={ `settings-coind-ports-${key}` }>
+            { key === 'komodod' ? 'KMD' : key }: { _ports[key] }<br />
+          </span>
+        );
+      }
+
       return (
         <div className="row">
           <div className="col-sm-12 padding-top-15">
@@ -50,16 +61,18 @@ class AppInfoPanel extends React.Component {
                 <br />
                 { translate('SETTINGS.CONFIG') }: { this.props.Settings.appInfo.dirs.configLocation }
                 <br />
-                Iguana { translate('SETTINGS.BIN') }: { this.props.Settings.appInfo.dirs.iguanaBin }
-                <br />
-                Iguana { translate('SETTINGS.DIR') }: { this.props.Settings.appInfo.dirs.iguanaDir }
-                <br />
                 Komodo { translate('SETTINGS.BIN') }: { this.props.Settings.appInfo.dirs.komododBin }
                 <br />
                 Komodo { translate('SETTINGS.DIR') }: { this.props.Settings.appInfo.dirs.komodoDir }
                 <br />
                 Komodo wallet.dat: { this.props.Settings.appInfo.dirs.komodoDir }
               </p>
+            }
+            { mainWindow.arch === 'x64' &&
+              <h5>Daemon ports</h5>
+            }
+            { mainWindow.arch === 'x64' &&
+              <p>{ _items }</p>
             }
           </div>
         </div>

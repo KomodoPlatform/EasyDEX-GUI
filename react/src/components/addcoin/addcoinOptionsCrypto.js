@@ -1,24 +1,19 @@
-import React from 'react';
 import { translate } from '../../translate/translate';
 import mainWindow from '../../util/mainWindow';
 
-class AddCoinOptionsCrypto extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
+const addCoinOptionsCrypto = () => {
+  const availableKMDModes = mainWindow.arch === 'x64' ? 'spv|native' : 'spv';
 
-  render() {
-    let availableKMDModes = mainWindow.arch === 'x64' ? 'spv|native' : 'spv';
-
-    return (
-      <optgroup label={ translate('ADD_COIN.CRYPTO_CURRENCIES') }>
-        <option value={ `KMD|${availableKMDModes}` }>Komodo (KMD)</option>
-        <option value="CHIPS|spv">Chips (CHIPS)</option>
-      </optgroup>
-    );
-  }
+  return [{
+    label: 'Komodo (KMD)',
+    icon: 'KMD',
+    value: `KMD|${availableKMDModes}`,
+  },
+  {
+    label: 'Chips (CHIPS)',
+    icon: 'CHIPS',
+    value: `CHIPS|spv`,
+  }];
 }
 
-export default AddCoinOptionsCrypto;
+export default addCoinOptionsCrypto;

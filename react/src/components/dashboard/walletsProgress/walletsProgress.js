@@ -14,6 +14,7 @@ import {
   VerifyingBlocksRender,
   WalletsProgressRender,
 } from './walletsProgress.render';
+import mainWindow from '../../../util/mainWindow';
 
 class WalletsProgress extends React.Component {
   constructor() {
@@ -28,12 +29,8 @@ class WalletsProgress extends React.Component {
   }
 
   componentWillMount() {
-    const _mainWindow = window.require('electron').remote.getCurrentWindow();
-    let _isWindows;
-
-    try {
-      _isWindows = _mainWindow.isWindows;
-    } catch (e) {}
+    const _mainWindow = mainWindow;
+    const _isWindows = mainWindow.isWindows;
 
     if (_isWindows) {
       _mainWindow.getMaxconKMDConf()
@@ -55,7 +52,7 @@ class WalletsProgress extends React.Component {
   }
 
   applyWindowsSyncWorkaround() {
-    const _mainWindow = window.require('electron').remote.getCurrentWindow();
+    const _mainWindow = mainWindow;
 
     _mainWindow.setMaxconKMDConf(1)
     .then((res) => {
@@ -111,7 +108,7 @@ class WalletsProgress extends React.Component {
     if (this.isWinSyncPercBelowThreshold() !== -777 &&
         this.state.isWindowsWorkaroundEnabled &&
         !this.isWinSyncPercBelowThreshold()) {
-      const _mainWindow = window.require('electron').remote.getCurrentWindow();
+      const _mainWindow = mainWindow;
 
       _mainWindow.setMaxconKMDConf()
       .then((res) => {

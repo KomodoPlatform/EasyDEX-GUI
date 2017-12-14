@@ -13,6 +13,7 @@ import {
   DEX_RESET,
   DEX_PRICES,
   DEX_STATS,
+  DEX_ACTIVE_SECTION,
 } from '../actions/storeType';
 
 export function Dex(state = {
@@ -30,7 +31,10 @@ export function Dex(state = {
   prices: {},
   utxo: {},
   inventory: {},
-  stats: {}
+  stats: {},
+  coinsHelper: {},
+  electrumServersList: {},
+  section: 'coins',
 }, action) {
   switch (action.type) {
     case DEX_CACHE_PRELOAD:
@@ -41,10 +45,14 @@ export function Dex(state = {
         pair: action.pair,
         coins: action.coins,
         swaps: action.swaps,
+        stats: action.stats,
         rates: action.rates,
         prices: action.prices,
         utxo: action.utxo,
         inventory: action.inventory,
+        coinsHelper: action.coinsHelper,
+        electrumServersList: action.electrumServersList,
+        section: state.section,
       };
     case DEX_RESET:
       return {
@@ -62,6 +70,9 @@ export function Dex(state = {
         prices: {},
         utxo: {},
         inventory: {},
+        coinsHelper: {},
+        electrumServersList: {},
+        section: state.section,
       };
     case DEX_LOGIN:
       return {
@@ -110,6 +121,11 @@ export function Dex(state = {
       return {
         ...state,
         stats: action.stats,
+      };
+    case DEX_ACTIVE_SECTION:
+      return {
+        ...state,
+        section: action.section,
       };
     default:
       return state;

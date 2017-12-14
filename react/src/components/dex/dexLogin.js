@@ -36,8 +36,8 @@ class DexLogin extends React.Component {
       .then((res) => {
         console.warn('mm cache', res);
 
-        const { rates, coins, isAuth } = res;
-        Store.dispatch(shepherdMMCachePreloadState(isAuth, null, null, null, coins, null, rates));
+        const { rates, coins, isAuth, swaps, asks, bids, pair, coinsHelper, electrumServersList } = res;
+        Store.dispatch(shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates, coinsHelper, electrumServersList));
       });
     });
   }

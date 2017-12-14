@@ -12,6 +12,7 @@ import {
 } from '../../actions/actionCreators';
 import Store from '../../store';
 import { zcashParamsCheckErrors } from '../../util/zcashParams';
+import mainWindow from '../../util/mainWindow';
 
 import CoinSelectorsRender from './coin-selectors.render';
 import AddCoinRender from './addcoin.render';
@@ -54,14 +55,14 @@ class AddCoin extends React.Component {
   verifyZcashParamsExist(mode) {
     return new Promise((resolve, reject) => {
       if (Number(mode) === -1) {
-        const _res = window.require('electron').remote.getCurrentWindow().zcashParamsExist;
+        const _res = mainWindow.zcashParamsExist;
         const __errors = zcashParamsCheckErrors(_res);
 
         if (__errors) {
-          window.require('electron').remote.getCurrentWindow().zcashParamsExistPromise()
+          mainWindow.zcashParamsExistPromise()
           .then((res) => {
             const _errors = zcashParamsCheckErrors(res);
-            window.require('electron').remote.getCurrentWindow().zcashParamsExist = res;
+            mainWindow.zcashParamsExist = res;
 
             if (_errors) {
               Store.dispatch(
@@ -147,14 +148,8 @@ class AddCoin extends React.Component {
   componentWillMount() {
     this.addNewItem();
 
-    let appConfig;
-
-    try {
-      appConfig = window.require('electron').remote.getCurrentWindow().appConfig;
-    } catch (e) {}
-
     this.setState({
-      isExperimentalOn: appConfig.experimentalFeatures,
+      isExperimentalOn: mainWindow.appConfig.experimentalFeatures,
     });
   }
 
@@ -179,32 +174,48 @@ class AddCoin extends React.Component {
     }
   }
 
+  renderCoinOption(option) {
+    return (
+      <div>
+        <img
+          src={ `/assets/images/cryptologo/${option.icon.toLowerCase()}.png` }
+          alt={ option.label }
+          width="30px"
+          height="30px"/>
+          <span className="margin-left-10">{ option.label }</span>
+      </div>
+    );
+  }
+
   updateSelectedCoin(e, index) {
-    const coin = e.target.value.split('|');
-    const defaultMode = coin[1];
-    const modeToValue = { // TODO: move to utils
-      'spv': 0,
-      'native': -1,
-    };
-    let _coins = this.state.coins;
-    const _value = e.target.value;
+    if (e.value &&
+        e.value.indexOf('|')) {
+      const coin = e.value.split('|');
+      const defaultMode = coin[1];
+      const modeToValue = { // TODO: move to utils
+        'spv': 0,
+        'native': -1,
+      };
+      const _value = e.value;
+      let _coins = this.state.coins;
 
-    _coins[index] = {
-      [e.target.name]: _value,
-      spvMode: {
-        disabled: _value.indexOf('spv') > -1 ? false : true,
-        checked: defaultMode === 'spv' ? true : false,
-      },
-      nativeMode: {
-        disabled: _value.indexOf('native') > -1 ? false : true,
-        checked: defaultMode === 'native' ? true : false,
-      },
-      mode: modeToValue[defaultMode] !== undefined ? modeToValue[defaultMode] : -2,
+      _coins[index] = {
+        selectedCoin: _value,
+        spvMode: {
+          disabled: _value.indexOf('spv') > -1 ? false : true,
+          checked: defaultMode === 'spv' ? true : false,
+        },
+        nativeMode: {
+          disabled: _value.indexOf('native') > -1 ? false : true,
+          checked: defaultMode === 'native' ? true : false,
+        },
+        mode: modeToValue[defaultMode] !== undefined ? modeToValue[defaultMode] : -2,
+      }
+
+      this.setState(Object.assign({}, this.state, {
+        coins: _coins,
+      }));
     }
-
-    this.setState(Object.assign({}, this.state, {
-      coins: _coins,
-    }));
   }
 
   updateSelectedMode(_value, index) {
@@ -336,8 +347,8 @@ class AddCoin extends React.Component {
   }
 
   renderCoinSelectors() {
-    let items = [];
     const _coins = this.state.coins;
+    let items = [];
 
     for (let i = 0; i < _coins.length; i++) {
       const _item = _coins[i];
