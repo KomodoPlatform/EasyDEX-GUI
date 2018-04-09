@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import ReactTable from 'react-table';
 import TablePaginationRenderer from './pagination';
-import { formatValue } from '../../../util/formatValue';
+import formatValue from '../../../util/formatValue';
 import Config from '../../../config';
 import Spinner from '../spinner/spinner';
 
@@ -52,7 +52,7 @@ export const AddressRender = function(tx) {
   if (!tx.address) {
     return (
       <span>
-        <i className="icon fa-bullseye"></i>&nbsp;
+        { /*<i className="icon fa-bullseye"></i>&nbsp; */ }
         <span className="label label-dark">
           { translate('DASHBOARD.ZADDR_NOT_LISTED') }
         </span>
@@ -66,7 +66,7 @@ export const AddressRender = function(tx) {
 export const AddressItemRender = function(address, type, amount, coin) {
   return (
     <li
-      key={address}
+      key={ address }
       className={ address === this.state.currentAddress ? 'selected' : '' }>
       <a onClick={ () => this.updateAddressSelection(address) }>
         <i className={ 'icon fa-eye' + (type === 'public' ? '' : '-slash') }></i>&nbsp;&nbsp;

@@ -15,7 +15,7 @@ import {
   ReceiveCoinRender,
   _ReceiveCoinTableRender,
 } from './receiveCoin.render';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 
 // TODO: implement balance/interest sorting
 

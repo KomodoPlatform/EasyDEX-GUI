@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import LoginSettingsModal from '../dashboard/loginSettingsModal/loginSettingsModal';
 import ZcparamsFetchModal from '../dashboard/zcparamsFetchModal/zcparamsFetchModal';
 import QRModal from '../dashboard/qrModal/qrModal';
@@ -25,6 +25,13 @@ const LoginRender = function() {
               height="160"
               alt="SuperNET Agama" />
           </div>
+          { /*mainWindow.nnVoteChain &&
+            <a
+              className="login-nn-elections"
+              onClick={ () => this._toggleNotaryElectionsModal() }>
+              <i className="icon fa-thumbs-up"></i> Notary Elections 2018
+            </a>*/
+          }
           <div className="login-settings-dropdown margin-bottom-30">
             <div>
               <span
@@ -46,13 +53,6 @@ const LoginRender = function() {
                     <i className="icon fa-users"></i> { translate('ABOUT.ABOUT_AGAMA') }
                   </a>
                 </li>
-                { mainWindow.nnVoteChain &&
-                  <li>
-                    <a onClick={ () => this._toggleNotaryElectionsModal() }>
-                      <i className="icon fa-thumbs-up"></i> Notary Elections 2018
-                    </a>
-                  </li>
-                }
               </ul>
             </div>
           </div>
@@ -253,33 +253,35 @@ const LoginRender = function() {
                 </span>
               </button>
               <div className="line">{ translate('LOGIN.OR_USE_A_SHORTCUT') }</div>
-              <div className="addcoin-shortcut">
-                <div>
-                  <i className="icon fa-cube margin-right-5"></i>
-                  { translate('INDEX.NATIVE_MODE') }
-                  <i
-                    className="icon fa-question-circle login-help"
-                    data-tip="<strong>Be aware:</strong> <u>Native mode</u> requires to download the whole blockchain data to a local disk before you can start using it.<br/>This may take from <strong>several hours to a day</strong> depending on your connection and hardware.<br/>Please <u>try to keep Agama running</u> until the whole process is finished."
-                    data-html={ true }></i>
-                  <ReactTooltip
-                    effect="solid"
-                    className="text-left" />
+              { mainWindow.arch === 'x64' &&
+                <div className="addcoin-shortcut">
+                  <div>
+                    <i className="icon fa-cube margin-right-5"></i>
+                    { translate('INDEX.NATIVE_MODE') }
+                    <i
+                      className="icon fa-question-circle login-help"
+                      data-tip="<strong>Be aware:</strong> <u>Native mode</u> requires to download the whole blockchain data to a local disk before you can start using it.<br/>This may take from <strong>several hours to a day</strong> depending on your connection and hardware.<br/>Please <u>try to keep Agama running</u> until the whole process is finished."
+                      data-html={ true }></i>
+                    <ReactTooltip
+                      effect="solid"
+                      className="text-left" />
+                  </div>
+                  <Select
+                    name="selectedShortcutNative"
+                    value={ this.state.selectedShortcutNative }
+                    onChange={ (event) => this.updateSelectedShortcut(event, 'native') }
+                    optionRenderer={ this.renderShortcutOption }
+                    valueRenderer={ this.renderShortcutOption }
+                    options={[
+                      { value: 'kmd', label: 'kmd' },
+                      { value: 'mnz', label: 'mnz' },
+                      { value: 'btch', label: 'btch' },
+                      { value: 'revs', label: 'revs' },
+                      { value: 'jumblr', label: 'jumblr' },
+                      { value: 'kmd+revs+jumblr', label: 'kmd+revs+jumblr' },
+                    ]} />
                 </div>
-                <Select
-                  name="selectedShortcutNative"
-                  value={ this.state.selectedShortcutNative }
-                  onChange={ (event) => this.updateSelectedShortcut(event, 'native') }
-                  optionRenderer={ this.renderShortcutOption }
-                  valueRenderer={ this.renderShortcutOption }
-                  options={[
-                    { value: 'kmd', label: 'kmd' },
-                    { value: 'mnz', label: 'mnz' },
-                    { value: 'btch', label: 'btch' },
-                    { value: 'revs', label: 'revs' },
-                    { value: 'jumblr', label: 'jumblr' },
-                    { value: 'kmd+revs+jumblr', label: 'kmd+revs+jumblr' },
-                  ]} />
-              </div>
+              }
               <div className="addcoin-shortcut">
                 <div>
                   <i className="icon fa-flash margin-right-5"></i>
@@ -396,7 +398,7 @@ const LoginRender = function() {
                   onClick={ () => this.copyPassPhraseToClipboard() }>
                   { translate('INDEX.COPY') }
                 </button>
-                <span className={ this.state.isCustomSeedWeak ? 'tooltiptext' : 'hide' }>
+                {/*<span className={ this.state.isCustomSeedWeak ? 'tooltiptext' : 'hide' }>
                   <strong>{ translate('INDEX.WEAK_SEED') }</strong><br /><br />
                   { translate('INDEX.YOUR_SEED_MUST_CONTAIN') }<br />
                   { translate('INDEX.YOUR_SEED_MUST_CONTAIN1') }<br />
@@ -404,7 +406,7 @@ const LoginRender = function() {
                   { translate('INDEX.YOUR_SEED_MUST_CONTAIN3') }<br />
                   { translate('INDEX.YOUR_SEED_MUST_CONTAIN4') }<br />
                   { translate('INDEX.YOUR_SEED_MUST_CONTAIN5') }<br />
-                </span>
+                </span>*/}
                 <label
                   className="floating-label"
                   htmlFor="walletseed">{ translate('INDEX.WALLET_SEED') }</label>

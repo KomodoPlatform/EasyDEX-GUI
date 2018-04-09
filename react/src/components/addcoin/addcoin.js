@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
 import {
   addCoin,
@@ -11,7 +11,7 @@ import {
   toggleZcparamsFetchModal,
 } from '../../actions/actionCreators';
 import Store from '../../store';
-import { zcashParamsCheckErrors } from '../../util/zcashParams';
+import zcashParamsCheckErrors from '../../util/zcashParams';
 import mainWindow from '../../util/mainWindow';
 
 import CoinSelectorsRender from './coin-selectors.render';

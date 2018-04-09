@@ -1,8 +1,9 @@
 import { triggerToaster } from '../actionCreators';
 import Config from '../../config';
 import Store from '../../store';
+import fetchType from '../../util/fetchType';
 
-export function getListUnspent(coin) {
+export const getListUnspent = (coin) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -12,17 +13,9 @@ export function getListUnspent(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -55,7 +48,7 @@ export function getListUnspent(coin) {
   });
 }
 
-export function getRawTransaction(coin, txid) {
+export const getRawTransaction = (coin, txid) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -69,17 +62,9 @@ export function getRawTransaction(coin, txid) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 'payload': payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);

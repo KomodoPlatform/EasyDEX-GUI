@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { toggleLoginSettingsModal } from '../../../actions/actionCreators';
 import Store from '../../../store';
 

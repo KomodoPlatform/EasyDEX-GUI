@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import { coindGetStdout } from '../../../actions/actionCreators';
 import Store from '../../../store';

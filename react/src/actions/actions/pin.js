@@ -5,8 +5,11 @@ import {
   triggerToaster
 } from '../actionCreators';
 import { iguanaWalletPassphrase } from './walletAuth';
+import translate from '../../translate/translate';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
 
-export function encryptPassphrase(passphrase, key, pubKey) {
+export const encryptPassphrase = (passphrase, key, pubKey) => {
   const payload = {
     string: passphrase,
     key: key,
@@ -15,13 +18,10 @@ export function encryptPassphrase(passphrase, key, pubKey) {
   };
 
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/encryptkey`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/encryptkey`,
+      fetchType(JSON.stringify(payload)).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -36,8 +36,8 @@ export function encryptPassphrase(passphrase, key, pubKey) {
     .then(json => {
       dispatch(
         triggerToaster(
-          'Passphrase successfully encrypted',
-          'Success',
+          translate('INDEX.PASSPHRASE_SUCCESSFULLY_ENCRYPTED'),
+          translate('KMD_NATIVE.SUCCESS'),
           'success'
         )
       );
@@ -45,7 +45,7 @@ export function encryptPassphrase(passphrase, key, pubKey) {
   }
 }
 
-export function loginWithPin(key, pubKey) {
+export const loginWithPin = (key, pubKey) => {
   const payload = {
     key: key,
     pubkey: pubKey,
@@ -53,13 +53,10 @@ export function loginWithPin(key, pubKey) {
   };
 
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/decryptkey`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/decryptkey`,
+      fetchType(JSON.stringify(payload)).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -77,14 +74,15 @@ export function loginWithPin(key, pubKey) {
   }
 }
 
-export function loadPinList() {
+export const loadPinList = () => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/getpinlist?token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/getpinlist${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(

@@ -1,6 +1,6 @@
 import React from 'react';
 import Store from '../../store';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import { connect } from 'react-redux';
 import {
   dashboardChangeSection,

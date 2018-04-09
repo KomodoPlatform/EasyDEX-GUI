@@ -1,14 +1,17 @@
 import { triggerToaster } from '../actionCreators';
 import Config from '../../config';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
 
-export function shepherdGetSysInfo() {
+export const shepherdGetSysInfo = () => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/sysinfo?token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    const _urlParams = {
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/sysinfo${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(

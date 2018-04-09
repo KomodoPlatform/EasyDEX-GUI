@@ -82,7 +82,7 @@ textarea {
 
 #loginPassphrase,
 #wifkeysPassphraseTextarea,
-input[type="password"] {
+input[type='password'] {
   width: calc(100% - 35px);
 }
 #wifkeysPassphraseTextarea,
@@ -165,10 +165,12 @@ option.login-option {
   margin: 30px 0;
 }
 
-.form-material .form-control.focus~.floating-label,
-.form-material .form-control:focus~.floating-label,
-.form-material .form-control:not(.empty)~.floating-label {
-  top: -14px;
+.form-material {
+  .form-control.focus~.floating-label,
+  .form-control:focus~.floating-label,
+  .form-control:not(.empty)~.floating-label {
+    top: -14px;
+  }
 }
 
 .pin-block-one {
@@ -261,5 +263,21 @@ option.login-option {
   .btn {
     background: transparent;
     color: #fff;
+  }
+}
+
+a.login-nn-elections {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: #fff;
+  border-radius: 4px;
+  border: solid 1px #fff;
+  font-size: 18px;
+  padding: 8px 10px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
   }
 }

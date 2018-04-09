@@ -1,4 +1,4 @@
-export function secondsToString(seconds, skipMultiply, showSeconds) {
+export const secondsToString = (seconds, skipMultiply, showSeconds) => {
   const a = new Date(seconds * (skipMultiply ? 1 : 1000));
   const months = [
     'Jan',
@@ -25,14 +25,14 @@ export function secondsToString(seconds, skipMultiply, showSeconds) {
   return time;
 }
 
-export function checkTimestamp(dateToCheck) {
+export const checkTimestamp = (dateToCheck) => {
   const currentEpochTime = new Date(Date.now()) / 1000;
   const secondsElapsed = Number(currentEpochTime) - Number(dateToCheck / 1000);
 
   return Math.floor(secondsElapsed);
 }
 
-export function secondsElapsedToString(timestamp) { // in seconds
+export const secondsElapsedToString = (timestamp) => { // in seconds
   const secondsElapsed = checkTimestamp(timestamp);
   const hours = Math.floor(timestamp / 3600);
   const minutes = Math.floor((timestamp - (hours * 3600)) / 60);

@@ -1,6 +1,6 @@
-import { translate } from '../translate/translate';
+import translate from '../translate/translate';
 
-export function zcashParamsCheckErrors(zcashParamsExist) {
+const zcashParamsCheckErrors = (zcashParamsExist) => {
   let _errors;
 
   if (zcashParamsExist.errors) {
@@ -27,3 +27,5 @@ export function zcashParamsCheckErrors(zcashParamsExist) {
 
   return _errors;
 }
+
+export default zcashParamsCheckErrors;

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Store from '../../../store';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import QrReader from 'react-qr-reader';
 import {
   QRModalRender,

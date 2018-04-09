@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
-import { sortByDate } from '../../../util/sort';
+import translate from '../../../translate/translate';
+import sortByDate from '../../../util/sort';
 import {
   toggleDashboardTxInfoModal,
   getTxDetails,
@@ -9,6 +9,8 @@ import {
 import Store from '../../../store';
 import WalletsTxInfoRender from './walletsTxInfo.render';
 import explorerList from '../../../util/explorerList';
+
+const shell = window.require('electron').shell;
 
 class WalletsTxInfo extends React.Component {
   constructor() {
@@ -93,25 +95,7 @@ class WalletsTxInfo extends React.Component {
 
   openExplorerWindow(txid) {
     const url = explorerList[this.props.ActiveCoin.coin].split('/').length - 1 > 2 ? `${explorerList[this.props.ActiveCoin.coin]}${txid}` : `${explorerList[this.props.ActiveCoin.coin]}/tx/${txid}`;
-    const remote = window.require('electron').remote;
-    const BrowserWindow = remote.BrowserWindow;
-
-    const externalWindow = new BrowserWindow({
-      width: 1280,
-      height: 800,
-      title: `${translate('INDEX.LOADING')}...`,
-      icon: remote.getCurrentWindow().iguanaIcon,
-      webPreferences: {
-        nodeIntegration: false,
-      },
-    });
-
-    externalWindow.loadURL(url);
-    externalWindow.webContents.on('did-finish-load', () => {
-      setTimeout(() => {
-        externalWindow.show();
-      }, 40);
-    });
+    return shell.openExternal(url);
   }
 
   render() {

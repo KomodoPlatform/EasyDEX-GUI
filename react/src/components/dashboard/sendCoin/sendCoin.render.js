@@ -1,7 +1,7 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import QRModal from '../qrModal/qrModal';
-import { formatValue } from '../../../util/formatValue';
+import formatValue from '../../../util/formatValue';
 import explorerList from '../../../util/explorerList';
 import ReactTooltip from 'react-tooltip';
 

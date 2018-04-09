@@ -1,7 +1,7 @@
-export function isNumber(value) {
+export const isNumber = (value) => {
   return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
-export function isPositiveNumber(value) {
+export const isPositiveNumber = (value) => {
   return isNumber(value) && (+value) > 0;
 }

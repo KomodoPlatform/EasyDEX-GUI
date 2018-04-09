@@ -14,9 +14,9 @@
  *                                                                            *
  ******************************************************************************/
 
-import { ClientWordList } from './wordlist.js';
+import ClientWordList from './wordlist.js';
 
-export const PassPhraseGenerator = {
+const PassPhraseGenerator = {
 	seeds: 0,
 	seedLimit: 512,
 
@@ -105,3 +105,5 @@ export const PassPhraseGenerator = {
 		this.seeds = 0;
 	}
 }
+
+export default PassPhraseGenerator;

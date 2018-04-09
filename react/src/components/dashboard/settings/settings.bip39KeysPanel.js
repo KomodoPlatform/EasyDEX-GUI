@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import {
   shepherdElectrumBip39Keys,
@@ -74,17 +74,12 @@ class Bip39KeysPanel extends React.Component {
 
     if (e.target.name === 'passphrase') {
       this.resizeLoginTextarea();
-
-      this.setState({
-        trimPassphraseTimer: _trimPassphraseTimer,
-        [e.target.name === 'passphraseTextarea' ? 'passphrase' : e.target.name]: newValue,
-      });
-    } else {
-      this.setState({
-        trimPassphraseTimer: _trimPassphraseTimer,
-        [e.target.name === 'passphraseTextarea' ? 'passphrase' : e.target.name]: newValue,
-      });
     }
+
+    this.setState({
+      trimPassphraseTimer: _trimPassphraseTimer,
+      [e.target.name === 'passphraseTextarea' ? 'passphrase' : e.target.name]: newValue,
+    });
   }
 
   resizeLoginTextarea() {
@@ -107,7 +102,8 @@ class Bip39KeysPanel extends React.Component {
       this.state.match,
       this.state.addressdepth,
       this.state.accounts
-    ).then((res) => {
+    )
+    .then((res) => {
       this.setState({
         keys: res.result.priv ? res.result : 'empty',
       });

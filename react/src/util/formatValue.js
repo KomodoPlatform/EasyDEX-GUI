@@ -1,5 +1,5 @@
 // display rounding
-export function formatValue(formatValue) {
+const formatValue = (formatValue) => {
   const _valueToStr = formatValue.toString();
 
   if (_valueToStr.indexOf('.') === -1) {
@@ -10,10 +10,9 @@ export function formatValue(formatValue) {
       let newVal = _valueToStr.substr(0, _valueToStr.indexOf('.') + 1);
 
       for (let i = 0; i < _decimal.length; i++) {
-        if (_decimal[i] === '0') {
-          newVal = newVal + _decimal[i];
-        } else {
-          newVal = newVal + _decimal[i];
+        newVal = newVal + _decimal[i];
+
+        if (_decimal[i] !== '0') {
           break;
         }
       }
@@ -22,3 +21,5 @@ export function formatValue(formatValue) {
     }
   }
 }
+
+export default formatValue;

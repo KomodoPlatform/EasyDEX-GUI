@@ -1,11 +1,11 @@
 import React from 'react';
 import Store from '../../store';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import {
   shepherdMMStart,
   shepherdMMCachePreloadState,
 } from '../../actions/actionCreators';
-import { PassPhraseGenerator } from '../../util/crypto/passphrasegenerator';
+import PassPhraseGenerator from '../../util/crypto/passphrasegenerator';
 import mainWindow from '../../util/mainWindow';
 import SVGFaviconColor from './svg/faviconColor';
 import SVGCopy from './svg/copy';

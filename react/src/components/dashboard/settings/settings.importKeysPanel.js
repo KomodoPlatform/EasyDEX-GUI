@@ -1,8 +1,6 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
-import {
-  importPrivKey,
-} from '../../../actions/actionCreators';
+import translate from '../../../translate/translate';
+import { importPrivKey } from '../../../actions/actionCreators';
 import Store from '../../../store';
 
 class ImportKeysPanel extends React.Component {

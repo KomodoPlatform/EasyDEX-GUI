@@ -1,8 +1,9 @@
 import { triggerToaster } from '../actionCreators';
 import Config from '../../config';
 import { DASHBOARD_UPDATE } from '../storeType';
+import fetchType from '../../util/fetchType';
 
-export function getDashboardUpdate(coin, activeCoinProps) {
+export const getDashboardUpdate = (coin, activeCoinProps) => {
   return dispatch => {
     const _fetchConfig = {
       method: 'POST',
@@ -18,7 +19,13 @@ export function getDashboardUpdate(coin, activeCoinProps) {
 
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/native/dashboard/update`,
-      _fetchConfig
+      fetchType(
+        JSON.stringify({
+          coin: coin,
+          rpc2cli: Config.rpc2cli,
+          token: Config.token,
+        })
+      ).post
     )
     .catch((error) => {
       console.log(error);
@@ -46,7 +53,7 @@ export function getDashboardUpdate(coin, activeCoinProps) {
   }
 }
 
-export function getDashboardUpdateState(json, coin, fakeResponse) {
+export const getDashboardUpdateState = (json, coin, fakeResponse) => {
   // rescan or similar resource heavy process
   if (fakeResponse ||
       ((json.result.getinfo.error && json.result.getinfo.error === 'daemon is busy') &&

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 
 const CoindDownModalRender = function() {
   let _debuglog = this.props.debugLog || '';

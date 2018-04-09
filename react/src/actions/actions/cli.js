@@ -3,7 +3,7 @@ import { CLI } from '../storeType';
 import Config from '../../config';
 import Store from '../../store';
 
-export function shepherdCliPromise(mode, chain, cmd, params) {
+export const shepherdCliPromise = (mode, chain, cmd, params) => {
   let _payload = {
     mode,
     chain,
@@ -38,7 +38,7 @@ export function shepherdCliPromise(mode, chain, cmd, params) {
   });
 }
 
-export function shepherdCli(mode, chain, cmd) {
+export const shepherdCli = (mode, chain, cmd) => {
   const _payload = {
     mode,
     chain,
@@ -69,7 +69,7 @@ export function shepherdCli(mode, chain, cmd) {
   }
 }
 
-export function cliResponseState(json) {
+export const cliResponseState = (json) => {
   return {
     type: CLI,
     data: json,

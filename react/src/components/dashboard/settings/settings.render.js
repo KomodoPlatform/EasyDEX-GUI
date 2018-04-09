@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import PanelSection from './settings.panelBody';
 import Panel from './settings.panel';
 

@@ -5,7 +5,7 @@ import {
   toggleZcparamsFetchModal,
   triggerToaster,
 } from '../../../actions/actionCreators';
-import { zcashParamsCheckErrors } from '../../../util/zcashParams';
+import zcashParamsCheckErrors from '../../../util/zcashParams';
 import Store from '../../../store';
 import mainWindow from '../../../util/mainWindow';
 

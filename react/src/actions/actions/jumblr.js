@@ -4,8 +4,9 @@ import {
 } from '../actionCreators';
 import Config from '../../config';
 import Store from '../../store';
+import fetchType from '../../util/fetchType';
 
-function getNewAddress(coin) {
+const getNewAddress = (coin) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -15,17 +16,9 @@ function getNewAddress(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -44,7 +37,7 @@ function getNewAddress(coin) {
   });
 }
 
-export function setJumblrAddress(coin, type, address) {
+export const setJumblrAddress = (coin, type, address) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -55,17 +48,9 @@ export function setJumblrAddress(coin, type, address) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post      
     )
     .catch((error) => {
       console.log(error);
@@ -84,7 +69,7 @@ export function setJumblrAddress(coin, type, address) {
   });
 }
 
-export function pauseJumblr(coin) {
+export const pauseJumblr = (coin) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -95,17 +80,9 @@ export function pauseJumblr(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post      
     )
     .catch((error) => {
       console.log(error);
@@ -124,7 +101,7 @@ export function pauseJumblr(coin) {
   });
 }
 
-export function resumeJumblr(coin) {
+export const resumeJumblr = (coin) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -135,17 +112,9 @@ export function resumeJumblr(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post      
     )
     .catch((error) => {
       console.log(error);
@@ -164,7 +133,7 @@ export function resumeJumblr(coin) {
   });
 }
 
-function dumpPrivkey(coin, key) {
+const dumpPrivkey = (coin, key) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -175,17 +144,9 @@ function dumpPrivkey(coin, key) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -204,13 +165,16 @@ function dumpPrivkey(coin, key) {
   });
 }
 
-export function importPrivkey(coin, key, rescan = false) {
+export const importPrivkey = (coin, key, rescan = false, isZKey) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
       chain: coin,
-      cmd: 'importprivkey',
-      params: [
+      cmd: isZKey ? 'z_importkey' : 'importprivkey',
+      params: isZKey ? [
+        key,
+        rescan
+      ] : [
         key,
         '',
         rescan
@@ -219,17 +183,9 @@ export function importPrivkey(coin, key, rescan = false) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);

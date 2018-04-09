@@ -1,5 +1,7 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
+
+const shell = window.require('electron').shell;
 
 class Support extends React.Component {
   constructor() {
@@ -7,7 +9,7 @@ class Support extends React.Component {
   }
 
   openExternalWindow(url) {
-    return window.require('electron').shell.openExternal(url);
+    return shell.openExternal(url);
   }
 
   render() {
@@ -66,10 +68,10 @@ class Support extends React.Component {
           <div className="row margin-top-30">
             <div className="col-sm-12">
               <p>
-                For guides & FAQ please go to <a onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/home') }>https://support.komodoplatform.com/support/home</a>
+                For guides & FAQ please go to <a className="pointer" onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/home') }>https://support.komodoplatform.com/support/home</a>
               </p>
               <p>
-                To send feedback please open a ticket at <a onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/tickets/new') }>https://support.komodoplatform.com/support/tickets/new</a>
+                To send feedback please open a ticket at <a className="pointer" onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/tickets/new') }>https://support.komodoplatform.com/support/tickets/new</a>
               </p>
             </div>
           </div>
