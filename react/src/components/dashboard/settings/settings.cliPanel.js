@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
-import {
-  shepherdCli,
-} from '../../../actions/actionCreators';
+import translate from '../../../translate/translate';
+import { shepherdCli } from '../../../actions/actionCreators';
 import Store from '../../../store';
 
 class CliPanel extends React.Component {
@@ -27,8 +25,8 @@ class CliPanel extends React.Component {
 
     if (allCoins) {
       if (mode === 'all') {
-        modes.map(function(mode) {
-          allCoins[mode].map(function(coin) {
+        modes.map((mode) => {
+          allCoins[mode].map((coin) => {
             items.push(
               <option
                 value={ coin }
@@ -39,7 +37,7 @@ class CliPanel extends React.Component {
           });
         });
       } else {
-        allCoins[mode].map(function(coin) {
+        allCoins[mode].map((coin) => {
           items.push(
             <option
               value={ coin }

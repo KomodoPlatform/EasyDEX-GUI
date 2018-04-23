@@ -13,11 +13,9 @@ import {
   DEX_STATS,
   DEX_ACTIVE_SECTION,
 } from '../storeType';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
-import {
-  triggerToaster,
-} from '../actionCreators';
+import { triggerToaster } from '../actionCreators';
 import Store from '../../store';
 
 export function shepherdMMCachePreloadState(isAuth, asks, bids, pair, coins, swaps, rates, coinsHelper, electrumServersList) {

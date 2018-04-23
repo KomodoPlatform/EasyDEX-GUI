@@ -7,7 +7,7 @@ import {
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import mainWindow from '../../../util/mainWindow';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 
 import CoindDownModalRender from './coindDownModal.render';
 

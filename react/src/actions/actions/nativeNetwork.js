@@ -2,11 +2,12 @@ import {
   DASHBOARD_ACTIVE_COIN_NET_PEERS,
   DASHBOARD_ACTIVE_COIN_NET_TOTALS,
 } from '../storeType';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import { triggerToaster } from '../actionCreators';
 import Config from '../../config';
+import fetchType from '../../util/fetchType';
 
-export function getNativePeers(coin) {
+export const getNativePeers = (coin) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -16,17 +17,9 @@ export function getNativePeers(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -46,7 +39,7 @@ export function getNativePeers(coin) {
   };
 }
 
-export function getNativeNettotals(coin) {
+export const getNativeNettotals = (coin) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -56,17 +49,9 @@ export function getNativeNettotals(coin) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -86,14 +71,14 @@ export function getNativeNettotals(coin) {
   };
 }
 
-export function getNativePeersState(json) {
+export const getNativePeersState = (json) => {
   return {
     type: DASHBOARD_ACTIVE_COIN_NET_PEERS,
     peers: json,
   }
 }
 
-export function getNativeNettotalsState(json) {
+export const getNativeNettotalsState = (json) => {
   return {
     type: DASHBOARD_ACTIVE_COIN_NET_TOTALS,
     totals: json,

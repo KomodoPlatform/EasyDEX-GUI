@@ -1,4 +1,4 @@
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import mainWindow from '../../util/mainWindow';
 import config from '../../config';
 
@@ -16,7 +16,184 @@ const addCoinOptionsCrypto = () => {
   }];
 
   if (config.experimentalFeatures) {
-    _coins.push({
+    _coins.push(/*{
+      label: 'ArtByte (ABY)',
+      icon: 'ABY',
+      value: `ABY|spv`,
+    }, {
+      label: 'VoteCoin (VOT)',
+      icon: 'VOT',
+      value: `VOT|spv`,
+    }, {
+      label: 'Bitdeal (BDL)',
+      icon: 'BDL',
+      value: `BDL|spv`,
+    }, {
+      label: 'BitcoinPrivate (BTCP)',
+      icon: 'BTCP',
+      value: `BTCP|spv`,
+    }, {
+      label: 'Machinecoin (MAC)',
+      icon: 'MAC',
+      value: `MAC|spv`,
+    },
+    {
+      label: 'Whitecoin (XWC)',
+      icon: 'XWC',
+      value: `XWC|spv`,
+    },
+    {
+      label: 'Vcash (XVC)',
+      icon: 'XVC',
+      value: `XVC|spv`,
+    },
+    {
+      label: 'Smartcash (SMART)',
+      icon: 'SMART',
+      value: `SMART|spv`,
+    },
+    {
+      label: 'Crave (CRAVE)',
+      icon: 'CRAVE',
+      value: `CRAVE|spv`,
+    },
+    {
+      label: 'AdCoin (ACC)',
+      icon: 'ACC',
+      value: `ACC|spv`,
+    }, {
+      label: 'Auroracoin (AUR)',
+      icon: 'AUR',
+      value: `AUR|spv`,
+    }, {
+      label: 'Bitcoin Atom (BCA)',
+      icon: 'BCA',
+      value: `BCA|spv`,
+    }, {
+      label: 'Clams (CLAM)',
+      icon: 'CLAM',
+      value: `CLAM|spv`,
+    }, {
+      label: 'ClubCoin (CLUB)',
+      icon: 'CLUB',
+      value: `CLUB|spv`,
+    }, {
+      label: 'Diamond (DMD)',
+      icon: 'DMD',
+      value: `DMD|spv`,
+    }, {
+      label: 'ExclusiveCoin (EXCL)',
+      icon: 'EXCL',
+      value: `EXCL|spv`,
+    }, {
+      label: 'FeatherCoin (FTC)',
+      icon: 'FTC',
+      value: `FTC|spv`,
+    }, {
+      label: 'Flash (Flash)',
+      icon: 'FLASH',
+      value: `FLASH|spv`,
+    }, {
+      label: 'Fujicoin (FJC)',
+      icon: 'FJC',
+      value: `FJC|spv`,
+    }, {
+      label: 'Gulden (NLG)',
+      icon: 'NLG',
+      value: `NLG|spv`,
+    }, {
+      label: 'Litecoin Cash (LCC)',
+      icon: 'LCC',
+      value: `LCC|spv`,
+    }, {
+      label: 'MinexCoin (MNX)',
+      icon: 'MNX',
+      value: `MNX|spv`,
+    }, {
+      label: 'NavCoin (NAV)',
+      icon: 'NAV',
+      value: `NAV|spv`,
+    }, {
+      label: 'NeosCoin (NEOS)',
+      icon: 'NEOS',
+      value: `NEOS|spv`,
+    }, {
+      label: 'OKCash (OK)',
+      icon: 'OK',
+      value: `OK|spv`,
+    }, {
+      label: 'OmniLayer (OMNI)',
+      icon: 'OMNI',
+      value: `OMNI|spv`,
+    }, {
+      label: 'Pivx (PIVX)',
+      icon: 'PIVX',
+      value: `PIVX|spv`,
+    }, {
+      label: 'Reddcoin (RDD)',
+      icon: 'RDD',
+      value: `RDD|spv`,
+    }, {
+      label: 'Unobtanium (UNO)',
+      icon: 'UNO',
+      value: `UNO|spv`,
+    }, {
+      label: 'Verge (XVG)',
+      icon: 'XVG',
+      value: `XVG|spv`,
+    }, {
+      label: 'VIVO (VIVO)',
+      icon: 'VIVO',
+      value: `VIVO|spv`,
+    }, {
+      label: 'E-Gulden (EFL)',
+      icon: 'EFL',
+      value: `EFL|spv`,
+    }, {
+      label: 'GoByte (GBX)',
+      icon: 'GBX',
+      value: `GBX|spv`,
+    }, {
+      label: 'Bitsend (BSD)',
+      icon: 'BSD',
+      value: `BSD|spv`,
+    }, {
+      label: 'LBRY Credits (LBC)',
+      icon: 'LBC',
+      value: `LBC|spv`,
+    }, {
+      label: 'Europecoin (ERC)',
+      icon: 'ERC',
+      value: `ERC|spv`,
+    }, {
+      label: 'Bata (BTA)',
+      icon: 'BTA',
+      value: `BTA|spv`,
+    }, {
+      label: 'Einsteinium (EMC2)',
+      icon: 'EMC2',
+      value: `EMC2|spv`,
+    }, {
+      label: 'Syscoin (SYS)',
+      icon: 'SYS',
+      value: `SYS|spv`,
+    }, {
+      label: 'GameCredits (GAME)',
+      icon: 'GAME',
+      value: `GAME|spv`,
+    }, {
+      label: 'Internet of People (IOP)',
+      icon: 'IOP',
+      value: `IOP|spv`,
+    }, {
+      label: 'Zencashio (ZEN)',
+      icon: 'ZEN',
+      value: `ZEN|spv`,
+    }, {
+      label: 'Zcoin (XZC)',
+      icon: 'XZC',
+      value: `XZC|spv`,
+    },*/ {
       label: 'BitcoinGold (BTG)',
       icon: 'BTG',
       value: `BTG|spv`,
@@ -92,6 +269,10 @@ const addCoinOptionsCrypto = () => {
       label: 'Hush (HUSH)',
       icon: 'HUSH',
       value: `HUSH|spv`,
+    }, {
+      label: 'SnowGem (SNG)',
+      icon: 'sng',
+      value: `SNG|spv`,
     }, {
       label: 'Zclassic (ZCL)',
       icon: 'ZCL',

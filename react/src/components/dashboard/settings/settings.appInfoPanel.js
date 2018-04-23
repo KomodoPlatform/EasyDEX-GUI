@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import mainWindow from '../../../util/mainWindow';
 
@@ -12,7 +12,7 @@ class AppInfoPanel extends React.Component {
     const releaseInfo = this.props.Settings.appInfo && this.props.Settings.appInfo.releaseInfo;
 
     if (!releaseInfo) {
-      return null
+      return null;
     } else {
       let _items = [];
       let _ports = mainWindow.getAssetChainPorts();

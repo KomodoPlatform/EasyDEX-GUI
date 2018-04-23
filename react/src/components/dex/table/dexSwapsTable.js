@@ -2,13 +2,11 @@ import React from 'react';
 import ReactTable from 'react-table';
 import TablePaginationRenderer from './pagination';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
-import { sortByDate } from '../../../util/sort';
-import { formatValue } from '../../../util/formatValue';
+import translate from '../../../translate/translate';
+import sortByDate from '../../../util/sort';
+import formatValue from '../../../util/formatValue';
 import Config from '../../../config';
-import {
-  triggerToaster,
-} from '../../../actions/actionCreators';
+import { triggerToaster } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import { secondsToString } from '../../../util/time';
 

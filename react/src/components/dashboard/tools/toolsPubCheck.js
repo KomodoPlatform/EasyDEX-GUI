@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import mainWindow from '../../../util/mainWindow';
 
 class ToolsPubCheck extends React.Component {

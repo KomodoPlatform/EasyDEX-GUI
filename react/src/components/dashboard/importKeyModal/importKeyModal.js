@@ -10,10 +10,8 @@ import {
   getDebugLog,
   getDashboardUpdateState,
 } from '../../../actions/actionCreators';
-import { translate } from '../../../translate/translate';
-import {
-  ImportKeyModalRender,
-} from './importKeyModal.render';
+import translate from '../../../translate/translate';
+import { ImportKeyModalRender } from './importKeyModal.render';
 
 const SEED_TRIM_TIMEOUT = 5000;
 
@@ -43,10 +41,12 @@ class ImportKeyModal extends React.Component {
       passphraseAddress: null,
       keyImportResult: null,
       importWithRescan: false,
+      importMulti: false,
       seedInputVisibility: false,
       wifInputVisibility: false,
       trimPassphraseTimer: null,
       seedExtraSpaces: false,
+      multipleWif: '',
     };
     this.generateKeysFromPassphrase = this.generateKeysFromPassphrase.bind(this);
     this.toggleImportWithRescan = this.toggleImportWithRescan.bind(this);
@@ -58,6 +58,7 @@ class ImportKeyModal extends React.Component {
     this.updateInput = this.updateInput.bind(this);
     this.importFromPassphrase = this.importFromPassphrase.bind(this);
     this.importFromWif = this.importFromWif.bind(this);
+    this.toggleImportMulti = this.toggleImportMulti.bind(this);
   }
 
   _copyCoinAddress(address) {
@@ -84,17 +85,12 @@ class ImportKeyModal extends React.Component {
 
     if (e.target.name === 'wifkeysPassphrase') {
       this.resizeLoginTextarea();
-
-      this.setState({
-        trimPassphraseTimer: _trimPassphraseTimer,
-        [e.target.name === 'wifkeysPassphraseTextarea' ? 'wifkeysPassphrase' : e.target.name]: newValue,
-      });
-    } else {
-      this.setState({
-        trimPassphraseTimer: _trimPassphraseTimer,
-        [e.target.name === 'wifkeysPassphraseTextarea' ? 'wifkeysPassphrase' : e.target.name]: newValue,
-      });
     }
+
+    this.setState({
+      trimPassphraseTimer: _trimPassphraseTimer,
+      [e.target.name === 'wifkeysPassphraseTextarea' ? 'wifkeysPassphrase' : e.target.name]: newValue,
+    });
   }
 
   resizeLoginTextarea() {
@@ -139,10 +135,23 @@ class ImportKeyModal extends React.Component {
   }
 
   importFromWif() {
-    this.importWifAddress(this.state.wif, this.state.importWithRescan);
+    if (this.state.importMulti) {
+      if (this.state.multipleWif &&
+          this.state.multipleWif.length) {
+        const _keys = this.state.multipleWif.split('\n');
+
+        for (let i = 0; i < _keys.length; i++) {
+          setTimeout(() => {
+            this.importWifAddress(_keys[i], i === _keys.length - 1 ? this.state.importWithRescan : false, true);
+          }, i * 1000);
+        }
+      }
+    } else {
+      this.importWifAddress(this.state.wif, this.state.importWithRescan);
+    }
   }
 
-  importWifAddress(wif, rescan) {
+  importWifAddress(wif, rescan, multi) {
     let _rescanInProgress = true;
 
     if (rescan) {
@@ -159,7 +168,7 @@ class ImportKeyModal extends React.Component {
           Store.dispatch(getDashboardUpdateState(null, this.props.ActiveCoin.coin, true));
           Store.dispatch(
             triggerToaster(
-              translate('INDEX.ADDRESS_IMPORTED_RESCAN_IN_PROGRESS'),
+              translate(multi ? 'INDEX.ADDRESSES_IMPORTED_RESCAN_IN_PROGRESS' : 'INDEX.ADDRESS_IMPORTED_RESCAN_IN_PROGRESS'),
               translate('TOASTR.WALLET_NOTIFICATION'),
               'info',
               false
@@ -173,8 +182,11 @@ class ImportKeyModal extends React.Component {
     importPrivkey(
       this.props.ActiveCoin.coin,
       wif,
-      rescan
-    ).then((json) => {
+      rescan,
+      // https://github.com/zcash/zcash/blob/master/src/chainparams.cpp#L152
+      wif[0] === 'S' && wif[1] === 'K'
+    )
+    .then((json) => {
       _rescanInProgress = false;
 
       if (rescan) {
@@ -188,7 +200,7 @@ class ImportKeyModal extends React.Component {
           !json.error) {
         Store.dispatch(
           triggerToaster(
-            rescan ? translate('INDEX.WALLET_RESCAN_FINISHED') : translate('INDEX.ADDRESS_IMPORTED'),
+            rescan ? translate('INDEX.WALLET_RESCAN_FINISHED') : multi ? translate('INDEX.ADDRESSES_IMPORTED') : translate('INDEX.ADDRESS_IMPORTED'),
             translate('TOASTR.WALLET_NOTIFICATION'),
             'success',
             rescan ? false : true,
@@ -212,9 +224,11 @@ class ImportKeyModal extends React.Component {
       wifkeysPassphrase: null,
       wifkeysPassphraseTextarea: null,
       importWithRescan: this.state.importWithRescan ? false : this.state.importWithRescan,
+      multipleWif: '',
     });
 
     // reset input vals
+    this.refs.multipleWif.value = '';
     this.refs.wif.value = '';
     this.refs.wifkeysPassphrase.value = '';
     this.refs.wifkeysPassphraseTextarea.value = '';
@@ -252,6 +266,12 @@ class ImportKeyModal extends React.Component {
   toggleImportWithRescan() {
     this.setState({
       importWithRescan: !this.state.importWithRescan,
+    });
+  }
+
+  toggleImportMulti() {
+    this.setState({
+      importMulti: !this.state.importMulti,
     });
   }
 

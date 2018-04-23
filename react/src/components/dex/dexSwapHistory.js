@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import DexSwapsTable from './table/dexSwapsTable';
 
 class DexSwapHistory extends React.Component {

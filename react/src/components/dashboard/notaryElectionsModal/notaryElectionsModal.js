@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   toggleNotaryElectionsModal,
   shepherdElectionsSend,
@@ -144,16 +144,16 @@ class NotaryElectionsModal extends React.Component {
         this.state.coin,
         [{
           address: this.state.multiOutAddress1,
-          value: parseInt((this.state.balance / _divisor) * 100000000),
+          value: parseInt((this.state.balance / _divisor) * 100000000) - 10000,
         }, {
           address: this.state.multiOutAddress2,
-          value: parseInt((this.state.balance / _divisor) * 100000000),
+          value: parseInt((this.state.balance / _divisor) * 100000000) - 10000,
         }, {
           address: this.state.multiOutAddress3,
-          value: parseInt((this.state.balance / _divisor) * 100000000),
+          value: parseInt((this.state.balance / _divisor) * 100000000) - 10000,
         }, {
           address: this.state.multiOutAddress4,
-          value: parseInt((this.state.balance / _divisor) * 100000000),
+          value: parseInt((this.state.balance / _divisor) * 100000000) - 10000,
         }],
         this.state.pub,
         ['ne2k18-na-1-eu-2-ae-3-sh-4']
@@ -667,7 +667,7 @@ class NotaryElectionsModal extends React.Component {
                           autoComplete="off" />
                         <button
                           onClick={ this.send }
-                          disabled={ !this.state.amount || !this.state.address || !this.state.address.length || !this.state.region || this.state.address === this.state.pub }
+                          disabled={ !this.state.amount || !this.state.address || !this.state.address.length }
                           className="btn btn-md btn-primary btn-block ladda-button elections-login-btn">
                           Vote
                         </button>

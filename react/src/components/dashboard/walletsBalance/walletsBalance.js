@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   getDashboardUpdate,
   shepherdElectrumBalance,
 } from '../../../actions/actionCreators';
 import mainWindow from '../../../util/mainWindow';
 import Config from '../../../config';
-import { formatValue } from '../../../util/formatValue';
+import formatValue from '../../../util/formatValue';
 import ReactTooltip from 'react-tooltip';
 
 import Store from '../../../store';
@@ -134,9 +134,14 @@ class WalletsBalance extends React.Component {
           <div className="text-right">{ _balance }</div>
           { _fiatPriceTotal > 0 &&
             _fiatPricePerCoin > 0 &&
-            <div
-              data-tip={ `Price per 1 ${this.props.ActiveCoin.coin} ~ $${formatValue(_fiatPricePerCoin)}` }
-              className="text-right">${ formatValue(_fiatPriceTotal) }</div>
+            <span>
+              <div
+                data-tip={ `Price per 1 ${this.props.ActiveCoin.coin} ~ $${formatValue(_fiatPricePerCoin)}` }
+                className="text-right">${ formatValue(_fiatPriceTotal) }</div>
+              <ReactTooltip
+                effect="solid"
+                className="text-left" />
+            </span>
           }
         </div>
       );

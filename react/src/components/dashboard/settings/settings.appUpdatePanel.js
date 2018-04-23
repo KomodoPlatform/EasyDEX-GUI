@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import Config from '../../../config';
 import {
@@ -196,6 +196,7 @@ class AppUpdatePanel extends React.Component {
     );
   };
 }
+
 const mapStateToProps = (state) => {
   return {
     Settings: state.Settings,

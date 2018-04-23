@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import Config from '../../../config';
 import { secondsToString } from '../../../util/time';
 import { coindList } from '../../../util/coinHelper';
-import {
-  getDebugLog,
-} from '../../../actions/actionCreators';
+import { getDebugLog } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import mainWindow from '../../../util/mainWindow';
 

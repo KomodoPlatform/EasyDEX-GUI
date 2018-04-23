@@ -14,7 +14,7 @@ import {
   shepherdElectrumSendPromise,
   validateAddressPromise,
 } from '../../../actions/actionCreators';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   ClaimInterestModalRender,
   _ClaimInterestTableRender

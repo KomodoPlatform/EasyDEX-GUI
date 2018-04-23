@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   getAppConfig,
   getAppInfo,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
-import {
-  SettingsRender,
-} from './settings.render';
+import { SettingsRender } from './settings.render';
 import mainWindow from '../../../util/mainWindow';
 
 /*

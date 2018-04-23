@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import SVGFaviconBlack from './svg/faviconBlack';
 import DexLoaderSmall from './dexLoaderSmall';
 import mainWindow from '../../util/mainWindow';

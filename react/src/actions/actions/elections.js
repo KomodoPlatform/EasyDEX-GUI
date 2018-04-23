@@ -1,16 +1,21 @@
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
 import { triggerToaster } from '../actionCreators';
 import Store from '../../store';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
 
-export function shepherdElectionsBalance(coin, address) {
+export const shepherdElectionsBalance = (coin, address) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/getbalance?coin=${coin}&address=${address}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/getbalance${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -28,14 +33,20 @@ export function shepherdElectionsBalance(coin, address) {
   });
 }
 
-export function shepherdElectionsTransactions(coin, address, type) {
+export const shepherdElectionsTransactions = (coin, address, type) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/elections/listtransactions?coin=${coin}&address=${address}&full=true&type=${type}&maxlength=20&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+      full: true,
+      type,
+      maxlength: 20,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/elections/listtransactions${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -53,17 +64,16 @@ export function shepherdElectionsTransactions(coin, address, type) {
   });
 }
 
-export function shepherdElectionsStatus() {
+export const shepherdElectionsStatus = () => {
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/elections/status`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/elections/status`,
+      fetchType(
+        JSON.stringify({
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -81,20 +91,19 @@ export function shepherdElectionsStatus() {
   });
 }
 
-export function shepherdElectionsLogin(seed, network) {
+export const shepherdElectionsLogin = (seed, network) => {
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/elections/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        seed,
-        network,
-        iguana: true,
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/elections/login`,
+      fetchType(
+        JSON.stringify({
+          seed,
+          network,
+          iguana: true,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -112,17 +121,16 @@ export function shepherdElectionsLogin(seed, network) {
   });
 }
 
-export function shepherdElectionsLogout() {
+export const shepherdElectionsLogout = () => {
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/elections/logout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/elections/logout`,
+      fetchType(
+        JSON.stringify({
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -140,16 +148,25 @@ export function shepherdElectionsLogout() {
   });
 }
 
-export function shepherdElectionsSend(coin, value, sendToAddress, changeAddress, opreturn) {
+export const shepherdElectionsSend = (coin, value, sendToAddress, changeAddress, opreturn) => {
   value = Math.floor(value);
 
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx?coin=${coin}&address=${sendToAddress}&value=${value}&change=${changeAddress}&vote=true&push=true&verify=false&opreturn=${opreturn}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+      value,
+      opreturn,
+      change: changeAddress,
+      vote: true,
+      push: true,
+      verify: false
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -167,24 +184,23 @@ export function shepherdElectionsSend(coin, value, sendToAddress, changeAddress,
   });
 }
 
-export function shepherdElectionsSendMany(coin, targets, change, opreturn) {
+export const shepherdElectionsSendMany = (coin, targets, change, opreturn) => {
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx-multiout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: Config.token,
-        coin,
-        targets,
-        change,
-        opreturn,
-        push: true,
-        verify: false,
-        vote: true,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx-multiout`,
+      fetchType(
+        JSON.stringify({
+          token: Config.token,
+          coin,
+          targets,
+          change,
+          opreturn,
+          push: true,
+          verify: false,
+          vote: true,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(

@@ -7,17 +7,19 @@ import {
   getDebugLog,
 } from '../actionCreators';
 import Config from '../../config';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import mainWindow from '../../util/mainWindow';
+import fetchType from '../../util/fetchType';
 
-export function nativeGetinfoFailureState() {
+export const nativeGetinfoFailureState = () => {
   return {
     type: DASHBOARD_ACTIVE_COIN_GETINFO_FAILURE,
   }
 }
 
-// TODO: use blockchaininfo rpc
-export function getSyncInfoNativeKMD(skipDebug, json, skipRemote) {
+// TODO: - use blockchaininfo rpc
+//       - use electrum as a remote node
+export const getSyncInfoNativeKMD = (skipDebug, json, skipRemote) => {
   let _json = json;
 
   if (skipRemote) {
@@ -33,11 +35,11 @@ export function getSyncInfoNativeKMD(skipDebug, json, skipRemote) {
     // https://www.kmd.host/
     return dispatch => {
       return fetch(
-        'https://kmd.explorer.supernet.org/api/status?q=getInfo', {
-        method: 'GET',
-      })
+        'https://kmd.explorer.supernet.org/api/status?q=getInfo',
+        fetchType.get
+      )
       .catch((error) => {
-        console.log(error);
+        console.warn(error);
         console.warn('remote kmd node fetch failed', true);
         _json = _json.error;
         _json['remoteKMDNode'] = null;
@@ -58,7 +60,7 @@ export function getSyncInfoNativeKMD(skipDebug, json, skipRemote) {
   }
 }
 
-function getSyncInfoNativeState(json, coin, skipDebug, skipRemote) {
+const getSyncInfoNativeState = (json, coin, skipDebug, skipRemote) => {
   /*if (!json.remoteKMDNode) {
     json = { error: { code: -28, message: 'Activating best chain...' } };
   }*/
@@ -91,7 +93,7 @@ function getSyncInfoNativeState(json, coin, skipDebug, skipRemote) {
   }
 }
 
-export function getSyncInfoNative(coin, skipDebug, skipRemote, suppressErrors) {
+export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -100,17 +102,10 @@ export function getSyncInfoNative(coin, skipDebug, skipRemote, suppressErrors) {
       rpc2cli: Config.rpc2cli,
       token: Config.token,
     };
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
 
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -203,7 +198,7 @@ export function getSyncInfoNative(coin, skipDebug, skipRemote, suppressErrors) {
   }
 }
 
-export function getBlockTemplate(_json, coin) {
+export const getBlockTemplate = (_json, coin) => {
   const payload = {
     mode: null,
     chain: coin,
@@ -213,17 +208,9 @@ export function getBlockTemplate(_json, coin) {
   };
 
   return dispatch => {
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -260,7 +247,7 @@ export function getBlockTemplate(_json, coin) {
       } else {
         if (json.error &&
             json.error.code === -10) {
-          console.log('debuglog');
+          console.warn('debuglog');
           dispatch(
             getDebugLogProgress(_json, coin)
           );
@@ -270,7 +257,7 @@ export function getBlockTemplate(_json, coin) {
   }
 }
 
-export function getDebugLogProgress(_json, coin) {
+export const getDebugLogProgress = (_json, coin) => {
   const payload = {
     mode: null,
     chain: coin,
@@ -279,17 +266,9 @@ export function getDebugLogProgress(_json, coin) {
   };
 
   return dispatch => {
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -315,8 +294,7 @@ export function getDebugLogProgress(_json, coin) {
           json.result.headers) {
         _json.result.longestchain = json.result.headers;
         _json.result.progress = json.result.blocks * 100 / json.result.headers;
-      } else if (json.result &&
-          json.result.indexOf('UpdateTip:') > -1) {
+      } else if (json.result && json.result.indexOf('UpdateTip:') > -1) {
         const _debugProgress = json.result.split(' ');
         let _height = '';
         let _progress = '';

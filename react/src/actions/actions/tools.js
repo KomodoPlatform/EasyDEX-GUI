@@ -1,22 +1,23 @@
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
 import { triggerToaster } from '../actionCreators';
 import Store from '../../store';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
 
-export function shepherdToolsSeedKeys(seed) {
+export const shepherdToolsSeedKeys = (seed) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/keys`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        seed,
-        active: true,
-        iguana: true,
-        token: Config.token,
-      }),
-    })
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/keys`,
+      fetchType(
+        JSON.stringify({
+          seed,
+          active: true,
+          iguana: true,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -34,14 +35,17 @@ export function shepherdToolsSeedKeys(seed) {
   });
 }
 
-export function shepherdToolsBalance(coin, address) {
+export const shepherdToolsBalance = (coin, address) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/getbalance?coin=${coin}&address=${address}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/getbalance${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -59,14 +63,19 @@ export function shepherdToolsBalance(coin, address) {
   });
 }
 
-export function shepherdToolsTransactions(coin, address) {
+export const shepherdToolsTransactions = (coin, address) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/listtransactions?coin=${coin}&address=${address}&full=true&maxlength=20&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+      full: true,
+      maxlength: 20,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/listtransactions${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -84,16 +93,24 @@ export function shepherdToolsTransactions(coin, address) {
   });
 }
 
-export function shepherdToolsBuildUnsigned(coin, value, sendToAddress, changeAddress) {
+export const shepherdToolsBuildUnsigned = (coin, value, sendToAddress, changeAddress) => {
   value = Math.floor(value);
 
   return new Promise((resolve, reject) => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx?coin=${coin}&address=${sendToAddress}&value=${value}&change=${changeAddress}&verify=false&push=false&offline=true&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      value,
+      address: sendToAddress,
+      change: changeAddress,
+      verify: false,
+      push: false,
+      offline: true,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/createrawtx${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -111,14 +128,18 @@ export function shepherdToolsBuildUnsigned(coin, value, sendToAddress, changeAdd
   });
 }
 
-export function shepherdToolsListunspent(coin, address) {
+export const shepherdToolsListunspent = (coin, address) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/listunspent?coin=${coin}&address=${address}&full=true&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      address,
+      full: true,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/listunspent${urlParams(_urlParams)}`,
+      fetchType.get  
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -136,19 +157,18 @@ export function shepherdToolsListunspent(coin, address) {
   });
 }
 
-export function shepherdToolsPushTx(network, rawtx) {
+export const shepherdToolsPushTx = (network, rawtx) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/pushtx`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        network,
-        rawtx,
-        token: Config.token,
-      }),
-    })
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/pushtx`,
+      fetchType(
+        JSON.stringify({
+          network,
+          rawtx,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -166,14 +186,17 @@ export function shepherdToolsPushTx(network, rawtx) {
   });
 }
 
-export function shepherdToolsWifToKP(coin, wif) {
+export const shepherdToolsWifToKP = (coin, wif) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/wiftopub?coin=${coin}&wif=${wif}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      coin,
+      wif,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/wiftopub${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -191,20 +214,19 @@ export function shepherdToolsWifToKP(coin, wif) {
   });
 }
 
-export function shepherdToolsSeedToWif(seed, network, iguana) {
+export const shepherdToolsSeedToWif = (seed, network, iguana) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/seedtowif`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        seed,
-        network,
-        iguana,
-        token: Config.token,
-      }),
-    })
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/seedtowif`,
+      fetchType(
+        JSON.stringify({
+          seed,
+          network,
+          iguana,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(

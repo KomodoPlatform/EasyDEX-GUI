@@ -1,11 +1,12 @@
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import {
   triggerToaster,
   getDashboardUpdate,
 } from '../actionCreators';
 import Config from '../../config';
+import fetchType from '../../util/fetchType';
 
-export function getNewKMDAddresses(coin, pubpriv, mode) {
+export const getNewKMDAddresses = (coin, pubpriv, mode) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -15,17 +16,9 @@ export function getNewKMDAddresses(coin, pubpriv, mode) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload: payload }),
-    };
-
     return fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload: payload })).post
     )
     .catch((error) => {
       console.log(error);
@@ -50,7 +43,8 @@ export function getNewKMDAddresses(coin, pubpriv, mode) {
       );
       dispatch(getDashboardUpdate(coin, mode));
     })
-    .catch((ex) => {
+    .catch((error) => {
+      console.log(error);
       dispatch(
         triggerToaster(
           json.result ? json.result : json,

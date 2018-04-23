@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { secondsToString } from '../../../util/time';
 import formatBytes from '../../../util/formatBytes';
 

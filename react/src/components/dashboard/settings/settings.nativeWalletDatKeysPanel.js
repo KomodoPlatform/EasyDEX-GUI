@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import { getWalletDatKeys } from '../../../actions/actionCreators';
 import { coindList } from '../../../util/coinHelper';

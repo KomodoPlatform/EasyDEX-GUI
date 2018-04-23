@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   dashboardChangeActiveCoin,
   getKMDAddressesNative,
@@ -20,7 +20,7 @@ import {
   JumblrRender,
   JumblrRenderSecretAddressList,
 } from './jumblr.render';
-import { PassPhraseGenerator } from '../../../util/crypto/passphrasegenerator';
+import PassPhraseGenerator from '../../../util/crypto/passphrasegenerator';
 
 // import gen komodo keys utils
 import '../../../util/crypto/gen/array.map.js';
@@ -215,7 +215,8 @@ class Jumblr extends React.Component {
           this.props.ActiveCoin.coin,
           'secret',
           _genKeys.address
-        ).then((json) => {
+        )
+        .then((json) => {
           if (json.error &&
               json.error.code) {
             Store.dispatch(

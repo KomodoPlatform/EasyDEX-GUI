@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   shepherdClearCoindFolder,
   triggerToaster,
@@ -37,7 +37,10 @@ class CoindClearDataDirPanel extends React.Component {
     });
 
     setTimeout(() => {
-      shepherdClearCoindFolder(_coin, this.state.keepWalletDat ? this.state.keepWalletDat : null)
+      shepherdClearCoindFolder(
+        _coin,
+        this.state.keepWalletDat ? this.state.keepWalletDat : null
+      )
       .then((res) => {
         if (res.msg === 'success') {
           this.setState({
@@ -86,6 +89,7 @@ class CoindClearDataDirPanel extends React.Component {
         key={ `coind-clear-data-coins-none` }
         value="none">{ translate('SETTINGS.PICK_A_COIN') }</option>
     );
+
     for (let i = 0; i < _nativeCoins.length; i++) {
       if (_nativeCoins[i] !== 'CHIPS') {
         _items.push(
@@ -105,7 +109,9 @@ class CoindClearDataDirPanel extends React.Component {
         <div className="row">
           <div className="col-sm-12 padding-bottom-10">
             <h4 className="col-red">
-              <i className="fa fa-warning"></i> { translate('SETTINGS.COIND_DATADIR_CLEAR_P1') }<br />{ translate('SETTINGS.COIND_DATADIR_CLEAR_P2') }
+              <i className="fa fa-warning"></i> { translate('SETTINGS.COIND_DATADIR_CLEAR_P1') }
+              <br />
+              { translate('SETTINGS.COIND_DATADIR_CLEAR_P2') }
             </h4>
             <div>
               <div className="col-sm-4 no-padding-left text-center">

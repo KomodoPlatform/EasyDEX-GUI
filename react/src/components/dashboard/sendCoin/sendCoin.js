@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Config from '../../../config';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { secondsToString } from '../../../util/time';
 import {
   triggerToaster,
@@ -11,6 +11,7 @@ import {
   shepherdElectrumSend,
   shepherdElectrumSendPreflight,
   shepherdGetRemoteBTCFees,
+  shepherdGetLocalBTCFees,
   copyString,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
@@ -26,9 +27,9 @@ import explorerList from '../../../util/explorerList';
 import Slider, { Range } from 'rc-slider';
 import ReactTooltip from 'react-tooltip';
 
-// TODO: - add links to explorers
-//       - render z address trim
-//       - handle click outside
+const shell = window.require('electron').shell;
+
+// TODO: - render z address trim
 
 const _feeLookup = [
   'fastestFee',
@@ -105,25 +106,7 @@ class SendCoin extends React.Component {
 
   openExplorerWindow(txid) {
     const url = explorerList[this.props.ActiveCoin.coin].split('/').length - 1 > 2 ? `${explorerList[this.props.ActiveCoin.coin]}${txid}` : `${explorerList[this.props.ActiveCoin.coin]}/tx/${txid}`;
-    const remote = window.require('electron').remote;
-    const BrowserWindow = remote.BrowserWindow;
-
-    const externalWindow = new BrowserWindow({
-      width: 1280,
-      height: 800,
-      title: `${translate('INDEX.LOADING')}...`,
-      icon: remote.getCurrentWindow().iguanaIcon,
-      webPreferences: {
-        nodeIntegration: false,
-      },
-    });
-
-    externalWindow.loadURL(url);
-    externalWindow.webContents.on('did-finish-load', () => {
-      setTimeout(() => {
-        externalWindow.show();
-      }, 40);
-    });
+    return shell.openExternal(url);
   }
 
   SendFormRender() {
@@ -439,7 +422,24 @@ class SendCoin extends React.Component {
             btcFeesSize: this.state.btcFeesType === 'advanced' ? res.result.electrum[this.state.btcFeesAdvancedStep] : res.result.recommended[_feeLookup[this.state.btcFeesTimeBasedStep]],
           });
         } else {
-          // TODO: fallback to local electrum
+          shepherdGetLocalBTCFees()
+          .then((res) => {
+            if (res.msg === 'success') {
+              // TODO: check, approx fiat value
+              this.setState({
+                btcFees: res.result,
+                btcFeesSize: this.state.btcFeesType === 'advanced' ? res.result.electrum[this.state.btcFeesAdvancedStep] : res.result.recommended[_feeLookup[this.state.btcFeesTimeBasedStep]],
+              });
+            } else {
+              Store.dispatch(
+                triggerToaster(
+                  'Cannot get BTC fees',
+                  translate('TOASTR.WALLET_NOTIFICATION'),
+                  'error'
+                )
+              );
+            }
+          });
         }
       });
     }

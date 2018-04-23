@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import mainWindow from '../../util/mainWindow';
 // TODO: add modal close on modal overlay click evt
 

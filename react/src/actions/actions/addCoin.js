@@ -1,6 +1,9 @@
 import { ACTIVE_HANDLE } from '../storeType';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
+
 import {
   triggerToaster,
   toggleAddcoinModal,
@@ -14,7 +17,7 @@ import {
   checkAC,
 } from '../../components/addcoin/payload';
 
-function iguanaActiveHandleState(json) {
+export const iguanaActiveHandleState = (json) => {
   return {
     type: ACTIVE_HANDLE,
     isLoggedIn: json.status === 'unlocked' ? true : false,
@@ -22,14 +25,15 @@ function iguanaActiveHandleState(json) {
   }
 }
 
-export function activeHandle() {
+export const activeHandle = () => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/auth/status?token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    const _urlParams = {
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/auth/status${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -49,19 +53,18 @@ export function activeHandle() {
   }
 }
 
-export function shepherdElectrumAuth(seed) {
+export const shepherdElectrumAuth = (seed) => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        seed,
-        iguana: true,
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/login`,
+      fetchType(
+        JSON.stringify({
+          seed,
+          iguana: true,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -90,14 +93,16 @@ export function shepherdElectrumAuth(seed) {
   }
 }
 
-export function shepherdElectrumAddCoin(coin) {
+export const shepherdElectrumAddCoin = (coin) => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/coins/add?coin=${coin}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    const _urlParams = {
+      coin,
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/electrum/coins/add${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -117,7 +122,7 @@ export function shepherdElectrumAddCoin(coin) {
   }
 }
 
-export function addCoin(coin, mode, startupParams) {
+export const addCoin = (coin, mode, startupParams) => {
   if (mode === 0 ||
       mode === '0') {
     return dispatch => {
@@ -130,7 +135,7 @@ export function addCoin(coin, mode, startupParams) {
   }
 }
 
-function handleErrors(response) {
+const handleErrors = (response) => {
   let _parsedResponse;
 
   if (!response.ok) {
@@ -141,7 +146,7 @@ function handleErrors(response) {
   }
 }
 
-export function shepherdHerd(coin, mode, path, startupParams) {
+export const shepherdHerd = (coin, mode, path, startupParams) => {
   let acData;
   let herdData = {
     'ac_name': coin,
@@ -160,7 +165,21 @@ export function shepherdHerd(coin, mode, path, startupParams) {
   } else if (coin === 'NINJA') {
     herdData['ac_options'].pop();
     herdData['ac_options'].push('-addnode=192.241.134.19');
-  }
+  } else if (coin === 'OOT') {
+    herdData['ac_options'].pop();
+    herdData['ac_options'].push('-addnode=174.138.107.226');
+  } else if (coin === 'BNTN') {
+    herdData['ac_options'].pop();
+    herdData['ac_options'].push('-addnode=94.130.169.205');
+  } else if (coin === 'EQL') {
+    herdData['ac_options'].pop();
+    herdData['ac_options'].push('-addnode=46.101.124.153');  
+  } else if (coin === 'GLXT') {
+    herdData['ac_options'].pop();
+    herdData['ac_options'].push('-addnode=34.201.62.8');  
+
+}
+
 
   if (coin === 'ZEC') {
     herdData = {
@@ -222,17 +241,16 @@ export function shepherdHerd(coin, mode, path, startupParams) {
       _herd = coin !== 'ZEC' ? 'komodod' : 'zcashd';
     }
 
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/herd`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        herd: _herd,
-        options: herdData,
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/herd`,
+      fetchType(
+        JSON.stringify({
+          herd: _herd,
+          options: herdData,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -252,7 +270,7 @@ export function shepherdHerd(coin, mode, path, startupParams) {
       } else {
         dispatch(
           triggerToaster(
-            translate('TOASTR.ERROR_STARTING_DAEMON', coin) + ' ' + translate('TOASTR.PORT_IS_TAKEN', acData),
+            `${translate('TOASTR.ERROR_STARTING_DAEMON', coin)} ${translate('TOASTR.PORT_IS_TAKEN', acData)}`,
             translate('TOASTR.SERVICE_NOTIFICATION'),
             'error',
             false
@@ -263,7 +281,7 @@ export function shepherdHerd(coin, mode, path, startupParams) {
   }
 }
 
-export function addCoinResult(coin, mode) {
+export const addCoinResult = (coin, mode) => {
   const modeToValue = {
     '0': 'spv',
     '-1': 'native',
@@ -319,18 +337,17 @@ export function addCoinResult(coin, mode) {
   }
 }
 
-export function _shepherdGetConfig(coin, mode, startupParams) {
+export const _shepherdGetConfig = (coin, mode, startupParams) => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chain: 'komodod',
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`,
+      fetchType(
+        JSON.stringify({
+          chain: 'komodod',
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -355,20 +372,19 @@ export function _shepherdGetConfig(coin, mode, startupParams) {
   }
 }
 
-export function shepherdGetConfig(coin, mode, startupParams) {
+export const shepherdGetConfig = (coin, mode, startupParams) => {
   if (coin === 'KMD' &&
       mode === '-1') {
     return dispatch => {
-      return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chain: 'komodod',
-          token: Config.token,
-        }),
-      })
+      return fetch(
+        `http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`,
+        fetchType(
+          JSON.stringify({
+            chain: 'komodod',
+            token: Config.token,
+          })
+        ).post
+      )
       .catch((error) => {
         console.log(error);
         dispatch(
@@ -393,16 +409,15 @@ export function shepherdGetConfig(coin, mode, startupParams) {
     }
   } else {
     return dispatch => {
-      return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chain: coin,
-          token: Config.token,
-        }),
-      })
+      return fetch(
+        `http://127.0.0.1:${Config.agamaPort}/shepherd/getconf`,
+        fetchType(
+          JSON.stringify({
+            chain: coin,
+            token: Config.token,
+          })
+        ).post
+      )
       .catch((error) => {
         console.log(error);
         dispatch(

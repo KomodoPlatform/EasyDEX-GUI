@@ -5,26 +5,29 @@ import {
   GET_PEERS_LIST,
   LOAD_APP_CONFIG,
 } from '../storeType';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import { triggerToaster } from '../actionCreators';
 import Config from '../../config';
 import Store from '../../store';
+import urlParams from '../../util/url';
+import fetchType from '../../util/fetchType';
 
-function getAppInfoState(json) {
+const getAppInfoState = (json) => {
   return {
     type: LOAD_APP_INFO,
     info: json,
   }
 }
 
-export function getAppInfo() {
+export const getAppInfo = () => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/appinfo?token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/appinfo${urlParams(_urlParams)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -40,7 +43,7 @@ export function getAppInfo() {
   }
 }
 
-export function settingsWifkeyState(json, coin) {
+export const settingsWifkeyState = (json, coin) => {
   return {
     type: GET_WIF_KEY,
     wifkey: json,
@@ -48,7 +51,7 @@ export function settingsWifkeyState(json, coin) {
   }
 }
 
-function parseImportPrivKeyResponse(json, dispatch) {
+const parseImportPrivKeyResponse = (json, dispatch) => {
   if (json.error === 'illegal privkey') {
     return dispatch => {
       dispatch(
@@ -86,7 +89,7 @@ function parseImportPrivKeyResponse(json, dispatch) {
   }
 }
 
-function getDebugLogState(json) {
+const getDebugLogState = (json) => {
   const _data = json.result.replace('\n', '\r\n');
 
   return {
@@ -95,8 +98,8 @@ function getDebugLogState(json) {
   }
 }
 
-export function getDebugLog(target, linesCount, acName) {
-  const payload = {
+export const getDebugLog = (target, linesCount, acName) => {
+  let payload = {
     herdname: target,
     lastLines: linesCount,
     token: Config.token,
@@ -107,13 +110,10 @@ export function getDebugLog(target, linesCount, acName) {
   }
 
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/debuglog`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/debuglog`,
+      fetchType(JSON.stringify(payload))
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -129,18 +129,17 @@ export function getDebugLog(target, linesCount, acName) {
   }
 }
 
-export function saveAppConfig(_payload) {
+export const saveAppConfig = (_payload) => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/appconf`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        payload: _payload,
-        token: Config.token,
-      }),
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/appconf`,
+      fetchType(
+        JSON.stringify({
+          payload: _payload,
+          token: Config.token,
+        })
+      ).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -165,7 +164,7 @@ export function saveAppConfig(_payload) {
   }
 }
 
-function getAppConfigState(json) {
+const getAppConfigState = (json) => {
   return {
     type: LOAD_APP_CONFIG,
     config: json,
@@ -174,12 +173,13 @@ function getAppConfigState(json) {
 
 export function getAppConfig() {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/appconf?token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+    };
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/appconf${urlParams(_urlParams)}`,
+      fetchType.get  
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -195,15 +195,12 @@ export function getAppConfig() {
   }
 }
 
-export function resetAppConfig() {
+export const resetAppConfig = () => {
   return dispatch => {
-    return fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/appconf/reset`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: Config.token })
-    })
+    return fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/appconf/reset`,
+      fetchType(JSON.stringify({ token: Config.token })).post
+    )
     .catch((error) => {
       console.log(error);
       dispatch(
@@ -228,16 +225,18 @@ export function resetAppConfig() {
   }
 }
 
-export function coindGetStdout(chain) {
+export const coindGetStdout = (chain) => {
   const _chain = chain === 'KMD' ? 'komodod' : chain;
 
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${Config.agamaPort}/shepherd/coind/stdout?chain=${chain}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams = {
+      token: Config.token,
+      chain,
+    };
+    fetch(
+      `http://127.0.0.1:${Config.agamaPort}/shepherd/coind/stdout${urlParams(_urlParams)}`,
+      fetchType.get  
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -255,16 +254,23 @@ export function coindGetStdout(chain) {
   });
 }
 
-export function getWalletDatKeys(chain, keyMatchPattern) {
+export const getWalletDatKeys = (chain, keyMatchPattern) => {
   const _chain = chain === 'KMD' ? null : chain;
 
   return new Promise((resolve, reject) => {
-    fetch(keyMatchPattern ? `http://127.0.0.1:${Config.agamaPort}/shepherd/coindwalletkeys?chain=${_chain}&search=${keyMatchPattern}&token=${Config.token}` : `http://127.0.0.1:${Config.agamaPort}/shepherd/coindwalletkeys?chain=${_chain}&token=${Config.token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const _urlParams1 = {
+      token: Config.token,
+      chain,
+      search: keyMatchPattern,
+    };
+    const _urlParams2 = {
+      token: Config.token,
+      chain,
+    };
+    fetch(
+      keyMatchPattern ? `http://127.0.0.1:${Config.agamaPort}/shepherd/coindwalletkeys${urlParams(_urlParams1)}` : `http://127.0.0.1:${Config.agamaPort}/shepherd/coindwalletkeys${urlParams(_urlParams2)}`,
+      fetchType.get
+    )
     .catch((error) => {
       console.log(error);
       Store.dispatch(
@@ -282,7 +288,7 @@ export function getWalletDatKeys(chain, keyMatchPattern) {
   });
 }
 
-export function dumpPrivKey(coin, address, isZaddr) {
+export const dumpPrivKey = (coin, address, isZaddr) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -293,17 +299,9 @@ export function dumpPrivKey(coin, address, isZaddr) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch(function(error) {
       console.log(error);
@@ -322,7 +320,7 @@ export function dumpPrivKey(coin, address, isZaddr) {
   });
 }
 
-export function validateAddress(coin, address, isZaddr) {
+export const validateAddress = (coin, address, isZaddr) => {
   return new Promise((resolve, reject) => {
     const payload = {
       mode: null,
@@ -333,17 +331,9 @@ export function validateAddress(coin, address, isZaddr) {
       token: Config.token,
     };
 
-    const _fetchConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ payload }),
-    };
-
     fetch(
       `http://127.0.0.1:${Config.agamaPort}/shepherd/cli`,
-      _fetchConfig
+      fetchType(JSON.stringify({ payload })).post
     )
     .catch(function(error) {
       console.log(error);

@@ -4,7 +4,7 @@ import {
   LOGIN,
   ACTIVE_HANDLE,
 } from '../storeType';
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import Config from '../../config';
 import {
   triggerToaster,

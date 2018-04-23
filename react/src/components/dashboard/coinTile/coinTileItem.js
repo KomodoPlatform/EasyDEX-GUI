@@ -30,7 +30,7 @@ import {
 import Store from '../../../store';
 import Config from '../../../config';
 import mainWindow from '../../../util/mainWindow';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 
 import CoinTileItemRender from './coinTileItem.render';
 

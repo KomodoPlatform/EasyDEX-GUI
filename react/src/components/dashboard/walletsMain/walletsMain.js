@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import WalletsMainRender from './walletsMain.render';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import {
   triggerToaster,
   prices,

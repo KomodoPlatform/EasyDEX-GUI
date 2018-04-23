@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../translate/translate';
+import translate from '../../../translate/translate';
 import { connect } from 'react-redux';
 import {
   copyCoinAddress,
@@ -93,7 +93,7 @@ class ExportKeysPanel extends React.Component {
                   <i className="icon wb-copy"></i> { translate('INDEX.COPY') }
               </button>
             </td>
-              <td className="padding-bottom-30 padding-left-15">
+            <td className="padding-bottom-30 padding-left-15">
               { _wifKeys[_key].priv }
               <button
                 className="btn btn-default btn-xs clipboard-edexaddr margin-left-10"

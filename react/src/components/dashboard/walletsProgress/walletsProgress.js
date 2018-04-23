@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
-import {
-  triggerToaster,
-} from '../../../actions/actionCreators';
+import translate from '../../../translate/translate';
+import { triggerToaster } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import {
   SyncErrorBlocksRender,

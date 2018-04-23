@@ -1,4 +1,4 @@
-import { translate } from '../../translate/translate';
+import translate from '../../translate/translate';
 import mainWindow from '../../util/mainWindow';
 
 const addCoinOptionsAC = () => {
@@ -6,7 +6,10 @@ const addCoinOptionsAC = () => {
     'bet',
     'bots',
     'ceal',
+    'mesh',
     'coqui',
+    'glxt',
+    'eql',
     'crypto',
     'hodl',
     'dex',
@@ -15,6 +18,7 @@ const addCoinOptionsAC = () => {
     'mgw',
     'mnz',
     'pangea',
+    'oot',
     'revs',
     'mshark',
     'supernet',
@@ -25,12 +29,13 @@ const addCoinOptionsAC = () => {
     'beer',
     'pizza',
     'vote2018',
-    'ninja'
+    'ninja',
+    'bntn'
   ];
   let _items = [];
 
   for (let i = 0; i < _assetChains.length; i++) {
-    let availableModes = _assetChains[i] !== 'kv' && _assetChains[i] !== 'axo' && _assetChains[i] !== 'etomic' ? 'spv|native' : 'native';
+    let availableModes = _assetChains[i] !== 'kv' && _assetChains[i] !== 'axo' && _assetChains[i] !== 'etomic' && _assetChains[i] !== 'mesh' && _assetChains[i] !== 'ceal' ? 'spv|native' : 'native';
 
     if (mainWindow.arch !== 'x64') {
       availableModes = 'spv';

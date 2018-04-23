@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../translate/translate';
-import { sortByDate } from '../../../util/sort';
-import { formatValue } from '../../../util/formatValue';
+import translate from '../../../translate/translate';
+import sortByDate from '../../../util/sort';
+import formatValue from '../../../util/formatValue';
 import Config from '../../../config';
 import {
   toggleDashboardTxInfoModal,
@@ -73,14 +73,6 @@ class WalletsData extends React.Component {
       this.handleClickOutside,
       false
     );
-
-    /*setTimeout(() => {
-      if (this.props.ActiveCoin.mode === 'basilisk' || (Object.keys(this.props.Main.coins.basilisk).length && (Object.keys(this.props.Main.coins.native).length || Object.keys(this.props.Main.coins.full).length)) || Object.keys(this.props.Main.coins.basilisk).length) {
-        socket.on('messages', msg => this.updateSocketsData(msg));
-      } else {
-        socket.removeAllListeners('messages');
-      }
-    }, 100);*/
   }
 
   componentWillUnmount() {
@@ -89,8 +81,6 @@ class WalletsData extends React.Component {
       this.handleClickOutside,
       false
     );
-
-    // socket.removeAllListeners('messages');
   }
 
   displayClaimInterestUI() {
@@ -98,7 +88,7 @@ class WalletsData extends React.Component {
         this.props.ActiveCoin.coin === 'KMD' &&
         this.props.ActiveCoin.balance) {
       if (this.props.ActiveCoin.balance.interest &&
-        this.props.ActiveCoin.balance.interest > 0) {
+          this.props.ActiveCoin.balance.interest > 0) {
         return 777;
       } else if ((this.props.ActiveCoin.balance.transparent && this.props.ActiveCoin.balance.transparent >= 10) || (this.props.ActiveCoin.balance.balance && this.props.ActiveCoin.balance.balance >= 10)) {
         return -777;
@@ -254,7 +244,6 @@ class WalletsData extends React.Component {
         e.srcElement.className !== 'dropdown-toggle btn-xs btn-default') {
       this.setState({
         addressSelectorOpen: false,
-        basiliskActionsMenu: false,
       });
     }
   }
@@ -343,7 +332,11 @@ class WalletsData extends React.Component {
       shepherdElectrumCheckServerConnection(_randomServer.ip, _randomServer.port)
       .then((res) => {
         if (res.result) {
-          shepherdElectrumSetServer(this.props.ActiveCoin.coin, _randomServer.ip, _randomServer.port)
+          shepherdElectrumSetServer(
+            this.props.ActiveCoin.coin,
+            _randomServer.ip,
+            _randomServer.port
+          )
           .then((serverSetRes) => {
             Store.dispatch(
               triggerToaster(
