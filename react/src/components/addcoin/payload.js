@@ -26,7 +26,8 @@ export function checkAC(coinVal) {
 			coinVal === 'BTCH' ||
 			coinVal === 'BEER' ||
 			coinVal === 'PIZZA' ||
-			coinVal === 'VOTE2018')	{
+			coinVal === 'VOTE2018' ||
+			coinVal === 'MAGNAX' )	{
 		return true;
 	} else {
 		return false;
@@ -118,6 +119,8 @@ export function startAssetChain(confpath, coin, mode, getSuppyOnly) {
 		NINJA: {
 			supply: 100000000,
 		},
+		MAGNAX: {
+			supply: 12000000,
 	};
 
 	if (mode === '-1') {
