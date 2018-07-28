@@ -268,6 +268,10 @@ export function getCoinTitle(coin) {
       coinlogo = 'MESH';
       coinname = 'SpaceMesh';
       break;
+	case 'MGNX':
+	  coinlogo = 'MGNX';
+	  coinname = 'MAGNAX';
+	  break;
     case 'AXO':
       coinlogo = 'AXO';
       coinname = 'AXO';

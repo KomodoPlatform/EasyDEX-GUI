@@ -849,6 +849,7 @@ export const LANG_EN = {
     'PIZZA': 'PIZZA (Test coin)',
     'VOTE2018': 'VOTE2018 (Notary Elections)',
     'NINJA': 'NINJA (NINJA)',
+	'MGNX': 'MAGNAX (MGNX)',
   },
   'DEX': {
     'GEN_NEW_PASSPHRASE': 'Generate a new passphrase',
